@@ -3,6 +3,23 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createProduct, getAllProducts } from "@/api/products";
 import { Product } from "@/types";
 import { useEffect } from "react";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Can } from "@/components/Can";
+
+const ProductCard = (props: { product: Product; key?: string }) => {
+  const { product, key } = props;
+  return (
+    <Card key={key} className="w-[350px]">
+      <CardHeader>
+        <CardTitle>{product.name}</CardTitle>
+        <CardDescription>{product.description}</CardDescription>
+      </CardHeader>
+      <CardFooter>
+        <Button>Add to cart</Button>
+      </CardFooter>
+    </Card>
+  );
+};
 
 const Home = () => {
   const queryClient = useQueryClient();
@@ -23,7 +40,7 @@ const Home = () => {
 
   useEffect(() => {
     const token =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQxNTczMzAsImV4cCI6MTcyNDI0MzczMH0.S8mEsyl7d1vS7WOlHYEJU7Gbdw2go2IeGH3qRUsHzSduVHQX1n6HuDkIr6RshDEe";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQyNDcxNDMsImV4cCI6MTcyNDMzMzU0M30.7xCa1-CnLTPnLNxcsnBsRO35EIiHbDTgdhLmZ6zQ3gkEWCzO4gDsQaOm6OvKyBMX";
     localStorage.setItem("authToken", token);
   }, []);
 
@@ -47,10 +64,26 @@ const Home = () => {
   if (isError) return <div>Error fetching products.</div>;
 
   return (
-    <div className="flex flex-col justify-center items-center gap-10 h-screen">
-      <h1 className="text-2xl">Welcome!</h1>
-      <Button onClick={() => mutation.mutate(body)}>Add product</Button>
-      {products && products.map((product: Product) => <div key={product.id}>{product.name}</div>)}
+    <div className="flex flex-col justify-center items-center flex-wrap w-screen">
+      <h1 className="text-2xl my-2">Welcome!</h1>
+      <Can
+        permission="PRODUCT:ADD"
+        permissionType="actions"
+        yes={() => <Button onClick={() => mutation.mutate(body)}>Add product</Button>}
+      />
+
+      <Can
+        permission="PRODUCT:GET"
+        permissionType="actions"
+        yes={() => (
+          <div className="flex justify-center items-center gap-10 flex-wrap my-2">
+            {products &&
+              products.map((product: Product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+          </div>
+        )}
+      />
     </div>
   );
 };
