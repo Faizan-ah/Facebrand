@@ -1,3 +1,6 @@
+export const ROLE_ADMIN = "ADMIN";
+export const ROLE_USER = "USER";
+
 export type Role = "ADMIN" | "USER";
 
 export type RoleControl = {
