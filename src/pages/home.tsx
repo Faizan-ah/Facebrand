@@ -6,10 +6,10 @@ import { useEffect } from "react";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Can } from "@/components/Can";
 
-const ProductCard = (props: { product: Product; key?: string }) => {
-  const { product, key } = props;
+const ProductCard = (props: { product: Product }) => {
+  const { product } = props;
   return (
-    <Card key={key} className="w-[350px]">
+    <Card key={product.id} className="w-[350px]">
       <CardHeader>
         <CardTitle>{product.name}</CardTitle>
         <CardDescription>{product.description}</CardDescription>
