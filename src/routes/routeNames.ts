@@ -1,5 +1,5 @@
 export const routeNames = {
-  Public: {
+  public: {
     login: "/login",
     register: "/register",
     home: "/home",
@@ -8,13 +8,16 @@ export const routeNames = {
     productDetails: "/products/",
     logout: "/logout"
   },
-  User: {
+  user: {
     parentRoute: "/user",
     profile: "/user/profile"
   },
-  Admin: {
+  admin: {
     parentRoute: "/admin",
+    dashboard: "/admin/dashboard",
     profile: "/admin/profile",
-    products: "/admin/products"
+    users: "/admin/users",
+    products: "/admin/products",
+    orders: "/admin/orders"
   }
 };

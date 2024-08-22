@@ -1,7 +1,7 @@
 import { Button } from "../components/ui/button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createProduct, getAllProducts } from "@/api/products";
-import { Product } from "@/types";
+import { Product } from "@/types/Product";
 import { useEffect } from "react";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Can } from "@/components/Can";

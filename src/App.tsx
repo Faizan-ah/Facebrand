@@ -15,16 +15,16 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Navigate to={routeNames.Public.home} replace={true} />
+        element: <Navigate to={routeNames.public.home} replace={true} />
       },
       ...publicRoutes,
       {
-        path: routeNames.Admin.parentRoute,
+        path: routeNames.admin.parentRoute,
         element: <ProtectedRoute requiredRole={ROLE_ADMIN} />,
         children: adminRoutes
       },
       {
-        path: routeNames.User.parentRoute,
+        path: routeNames.user.parentRoute,
         element: <ProtectedRoute requiredRole={ROLE_USER} />,
         children: userRoutes
       },
