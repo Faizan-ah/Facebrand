@@ -5,7 +5,7 @@ import { routeNames } from "./routes/routeNames";
 import { adminRoutes, publicRoutes, userRoutes } from "./routes/routes";
 import { ProtectedRoute } from "./routes/ProtectedRoutes";
 import NotFound from "./pages/NotFound";
-import { ROLE_ADMIN, ROLE_USER } from "./lib/access-control";
+import { ROLE_ADMIN, ROLE_USER } from "./lib/accessControl";
 
 const router = createBrowserRouter([
   {

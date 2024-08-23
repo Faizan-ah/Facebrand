@@ -1,4 +1,4 @@
-import { Role } from "./../lib/access-control";
+import { Role } from "../lib/accessControl";
 
 export type DecodedUser = {
   aud: string;

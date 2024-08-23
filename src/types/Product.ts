@@ -1,5 +1,5 @@
 export interface Product {
-  id?: string;
+  id: string;
   name: string;
   price: number;
   description: string;
@@ -12,3 +12,5 @@ export interface Product {
   rating: number;
   quantity: number;
 }
+
+export type CreateProduct = Omit<Product, "id">;

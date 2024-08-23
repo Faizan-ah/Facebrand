@@ -1,10 +1,9 @@
 import { Button } from "../components/ui/button";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createProduct, getAllProducts } from "@/api/products";
-import { Product } from "@/types/Product";
-import { useEffect } from "react";
+import { CreateProduct, Product } from "@/types/Product";
+import { useEffect, useState } from "react";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Can } from "@/components/Can";
+import { useAddProduct, useGetProduct } from "@/features/useProduct";
 
 const ProductCard = (props: { product: Product }) => {
   const { product } = props;
@@ -22,9 +21,7 @@ const ProductCard = (props: { product: Product }) => {
 };
 
 const Home = () => {
-  const queryClient = useQueryClient();
-
-  const body = {
+  const [newProduct] = useState<CreateProduct>({
     name: "Wireless Headphones",
     price: 199.99,
     description: "High-quality wireless headphones with noise cancellation.",
@@ -36,29 +33,16 @@ const Home = () => {
     },
     rating: 4.5,
     quantity: 100
-  };
+  });
 
   useEffect(() => {
     const token =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQyNDcxNDMsImV4cCI6MTcyNDMzMzU0M30.7xCa1-CnLTPnLNxcsnBsRO35EIiHbDTgdhLmZ6zQ3gkEWCzO4gDsQaOm6OvKyBMX";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQ0Mjk1NjQsImV4cCI6MTcyNDUxNTk2NH0.VRNBMVO2VP9IFVPEOs4qEVmxpsZnRhxutpyNlYRyOL4a0zxEOEcFR8b5n97DB-1O";
     localStorage.setItem("authToken", token);
   }, []);
 
-  const {
-    data: products,
-    isLoading,
-    isError
-  } = useQuery({
-    queryKey: ["getProductList"],
-    queryFn: getAllProducts
-  });
-
-  const mutation = useMutation({
-    mutationFn: createProduct,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getProductList"] });
-    }
-  });
+  const { data: products, isLoading, isError } = useGetProduct();
+  const addProduct = useAddProduct();
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching products.</div>;
@@ -69,7 +53,7 @@ const Home = () => {
       <Can
         permission="PRODUCT:ADD"
         permissionType="actions"
-        yes={() => <Button onClick={() => mutation.mutate(body)}>Add product</Button>}
+        yes={() => <Button onClick={() => addProduct.mutate(newProduct)}>Add product</Button>}
       />
 
       <Can
@@ -77,10 +61,9 @@ const Home = () => {
         permissionType="actions"
         yes={() => (
           <div className="flex justify-center items-center gap-10 flex-wrap my-2">
-            {products &&
-              products.map((product: Product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+            {products.map((product: Product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
           </div>
         )}
       />

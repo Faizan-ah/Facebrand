@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import NotFound from "../pages/NotFound";
-import { Role } from "@/lib/access-control";
+import { Role } from "@/lib/accessControl";
 
 interface ProtectedRouteProps {
   requiredRole: Role;

@@ -4,7 +4,7 @@ import {
   PagePermission,
   PermissionCategory,
   RBAC_ROLES
-} from "../lib/access-control";
+} from "../lib/accessControl";
 
 const checkPermission = (
   role: Role,

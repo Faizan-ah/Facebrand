@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import api from ".";
-import { Product } from "../types";
+import { CreateProduct, Product } from "../types/Product";
 
 export const getAllProducts = async () => {
   try {
@@ -11,7 +11,7 @@ export const getAllProducts = async () => {
     return [];
   }
 };
-export const createProduct = async (product: Product) => {
+export const createProduct = async (product: CreateProduct) => {
   try {
     const res = await api.post("/products", product);
     return res;
