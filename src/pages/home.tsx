@@ -6,9 +6,9 @@ import { Can } from "@/components/Can";
 import { useAddProduct, useGetProduct } from "@/features/useProduct";
 import { useNavigate } from "react-router-dom";
 import { routeNames } from "@/routes/routeNames";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import { handleOnChange } from "@/lib/utils";
-
+import { useDebounce } from "@/hooks/customHooks";
 const ProductCard = (props: { product: Product }) => {
   const navigate = useNavigate();
   const { product } = props;
@@ -46,13 +46,15 @@ const Home = () => {
     quantity: 100
   });
   const [search, setSearch] = useState("");
+  const debouncedSearchTerm = useDebounce(search, 1000);
+
   useEffect(() => {
     const token =
       "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQ0Mjk1NjQsImV4cCI6MTcyNDUxNTk2NH0.VRNBMVO2VP9IFVPEOs4qEVmxpsZnRhxutpyNlYRyOL4a0zxEOEcFR8b5n97DB-1O";
     localStorage.setItem("authToken", token);
   }, []);
 
-  const { data: products, isLoading, isError } = useGetProduct(search);
+  const { data: products, isLoading, isError } = useGetProduct(debouncedSearchTerm);
   const addProduct = useAddProduct();
 
   if (isLoading) return <div>Loading...</div>;
