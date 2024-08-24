@@ -18,3 +18,11 @@ export const getDataFromLocalStorage = (key: string) => {
 export const saveDataToLocalStorage = (key: string, data: any) => {
   return localStorage.setItem(key, JSON.stringify(data));
 };
+
+export const handleOnChange = <T>(
+  e: React.ChangeEvent<HTMLInputElement>,
+  setState: React.Dispatch<React.SetStateAction<T>>
+) => {
+  e.preventDefault();
+  setState(e.target.value as T);
+};

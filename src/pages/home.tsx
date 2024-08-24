@@ -1,11 +1,13 @@
 import { Button } from "../components/ui/button";
 import { CreateProduct, Product } from "@/types/Product";
 import { useEffect, useState } from "react";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Can } from "@/components/Can";
 import { useAddProduct, useGetProduct } from "@/features/useProduct";
 import { useNavigate } from "react-router-dom";
 import { routeNames } from "@/routes/routeNames";
+import { Input } from "@/components/ui/input";
+import { handleOnChange } from "@/lib/utils";
 
 const ProductCard = (props: { product: Product }) => {
   const navigate = useNavigate();
@@ -43,14 +45,14 @@ const Home = () => {
     rating: 4.5,
     quantity: 100
   });
-
+  const [search, setSearch] = useState("");
   useEffect(() => {
     const token =
       "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQ0Mjk1NjQsImV4cCI6MTcyNDUxNTk2NH0.VRNBMVO2VP9IFVPEOs4qEVmxpsZnRhxutpyNlYRyOL4a0zxEOEcFR8b5n97DB-1O";
     localStorage.setItem("authToken", token);
   }, []);
 
-  const { data: products, isLoading, isError } = useGetProduct();
+  const { data: products, isLoading, isError } = useGetProduct(search);
   const addProduct = useAddProduct();
 
   if (isLoading) return <div>Loading...</div>;
@@ -64,7 +66,13 @@ const Home = () => {
         permissionType="actions"
         yes={() => <Button onClick={() => addProduct.mutate(newProduct)}>Add product</Button>}
       />
-
+      <Input
+        type="search"
+        value={search}
+        name="search"
+        onChange={(e) => handleOnChange(e, setSearch)}
+        placeholder="Search products.."
+      />
       <Can
         permission="PRODUCT:GET"
         permissionType="actions"
