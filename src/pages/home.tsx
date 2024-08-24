@@ -4,11 +4,20 @@ import { useEffect, useState } from "react";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Can } from "@/components/Can";
 import { useAddProduct, useGetProduct } from "@/features/useProduct";
+import { useNavigate } from "react-router-dom";
+import { routeNames } from "@/routes/routeNames";
 
 const ProductCard = (props: { product: Product }) => {
+  const navigate = useNavigate();
   const { product } = props;
   return (
-    <Card key={product.id} className="w-[350px]">
+    <Card
+      key={product.id}
+      className="w-[350px]"
+      onClick={() =>
+        navigate(routeNames.public.productDetails + product.id, { state: { product } })
+      }
+    >
       <CardHeader>
         <CardTitle>{product.name}</CardTitle>
         <CardDescription>{product.description}</CardDescription>

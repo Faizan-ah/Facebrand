@@ -4,8 +4,11 @@ import { routeNames } from "./routeNames";
 import Product from "@/pages/admin/Product";
 import Order from "@/pages/admin/Order";
 import User from "@/pages/admin/User";
-
-export const publicRoutes = [{ path: routeNames.public.home, element: <Home /> }];
+import ProductDetails from "@/pages/product/index";
+export const publicRoutes = [
+  { path: routeNames.public.home, element: <Home /> },
+  { path: routeNames.public.productDetails + ":id", element: <ProductDetails /> }
+];
 
 export const adminRoutes = [
   { path: routeNames.admin.dashboard, element: <Dashboard /> },

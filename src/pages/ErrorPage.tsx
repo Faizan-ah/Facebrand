@@ -10,7 +10,7 @@ const ErrorPage = () => {
     <div id="error-page" className="text-center mt-4">
       <h1 className="font-bold text-2xl">Oops!</h1>
       <p className="my-2">Sorry, an unexpected error has occurred.</p>
-      <Button onClick={() => navigate(routeNames.Public.home)}>Go to Home</Button>
+      <Button onClick={() => navigate(routeNames.public.home)}>Go to Home</Button>
     </div>
   );
 };

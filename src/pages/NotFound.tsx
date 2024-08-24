@@ -8,7 +8,7 @@ export default function NotFound() {
     <div className="text-center mt-4">
       <h1 className="font-bold text-2xl">Page Not Found!</h1>
       <p className="my-2">Want to go back?</p>
-      <Button onClick={() => navigate(routeNames.Public.home)}>Go to Home</Button>
+      <Button onClick={() => navigate(routeNames.public.home)}>Go to Home</Button>
     </div>
   );
 }
