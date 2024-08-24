@@ -8,17 +8,31 @@ const getQuertKeys = (id?: string) => {
   return id ? [RESOURCE, id] : [RESOURCE];
 };
 // GET ALL PRODUCTS
-export const useGetProduct = (searchQuery = "") => {
+export const useGetProduct = (searchQuery = "", sortBy = "") => {
   return useQuery({
     queryKey: getQuertKeys(),
     queryFn: getAllProducts,
-    select: (data) => {
+    select: (data: Product[]) => {
+      let filteredData = data;
+
       if (searchQuery) {
-        return data.filter((product: Product) =>
+        filteredData = filteredData.filter((product) =>
           product.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
       }
-      return data;
+
+      if (sortBy === "ph") {
+        filteredData = filteredData.sort((a, b) => b.price - a.price);
+      } else if (sortBy === "pl") {
+        filteredData = filteredData.sort((a, b) => a.price - b.price);
+      } else if (sortBy === "asc") {
+        filteredData = filteredData.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (sortBy === "dsc") {
+        filteredData = filteredData.sort((a, b) => b.name.localeCompare(a.name));
+      } else if (sortBy === "tr") {
+        filteredData = filteredData.sort((a, b) => b.rating - a.rating);
+      }
+      return filteredData;
     },
     initialData: []
   });

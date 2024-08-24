@@ -1,5 +1,5 @@
 import Dashboard from "@/pages/admin/Dashboard";
-import Home from "@/pages/home";
+import Home from "@/pages/Home";
 import { routeNames } from "./routeNames";
 import Product from "@/pages/admin/Product";
 import Order from "@/pages/admin/Order";
