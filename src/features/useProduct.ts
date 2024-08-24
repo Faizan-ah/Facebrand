@@ -4,13 +4,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const RESOURCE = "products";
 
-const getQuertKeys = (id?: string) => {
-  return id ? [RESOURCE, id] : [RESOURCE];
+const getQuertKeys = (id?: string, searchQuery = "", sortBy = "") => {
+  return id ? [RESOURCE, id, { searchQuery, sortBy }] : [RESOURCE, { searchQuery, sortBy }];
 };
 // GET ALL PRODUCTS
 export const useGetProduct = (searchQuery = "", sortBy = "") => {
   return useQuery({
-    queryKey: getQuertKeys(),
+    queryKey: getQuertKeys(undefined, searchQuery, sortBy),
     queryFn: getAllProducts,
     select: (data: Product[]) => {
       let filteredData = data;
