@@ -40,7 +40,7 @@ const Home = () => {
 
   useEffect(() => {
     const token =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQ1OTgyNTUsImV4cCI6MTcyNDY4NDY1NX0.g2bAdPZIDkYwD1p6vfrzE6_W1ilSlM3IETPqptaFORWjlSFZv6zj8X2OUX0tOb7w";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQ2ODUxMTMsImV4cCI6MTcyNDc3MTUxM30.9Y4tD_PBIFqJfyCr-C6IfS7afNbPGAncOqBPt-qccdLsIigbmhYVsyFyLnmCo2VG";
     localStorage.setItem("authToken", token);
   }, []);
 
