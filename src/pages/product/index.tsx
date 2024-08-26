@@ -1,5 +1,4 @@
-import { Product as ProductType } from "@/types/Product";
-import React from "react";
+import { Product as ProductType } from "@/types/product";
 import { useLocation } from "react-router-dom";
 
 const Product = () => {

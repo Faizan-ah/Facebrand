@@ -1,12 +1,33 @@
 import { Button } from "@/components/ui/button";
-import { Product } from "@/types/Product";
+import { Product } from "@/types/product";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { routeNames } from "@/routes/routeNames";
+import { useAddToCart, useGetCart } from "@/features/useCart";
 
-const ProductCard = (props: { product: Product }) => {
+interface Props {
+  product: Product;
+  userId: string; //TODO: remove later
+}
+const ProductCard = (props: Props) => {
   const navigate = useNavigate();
-  const { product } = props;
+  const { product, userId } = props;
+  const addToCart = useAddToCart();
+  //TODO: find a better solution when cart structure is good
+  const { data: cart } = useGetCart(userId);
+
+  const handleAddProductToCart = () => {
+    const currentQuantity = cart?.products?.find((p) => p.product.id === product.id)?.quantity ?? 0;
+
+    const cartBody = {
+      userId: userId,
+      productId: product.id,
+      quantity: currentQuantity + 1
+    };
+
+    addToCart.mutate(cartBody);
+  };
+
   const viewProduct = () =>
     navigate(routeNames.public.productDetails + product.id, { state: { product } });
   return (
@@ -40,7 +61,9 @@ const ProductCard = (props: { product: Product }) => {
         <CardDescription className="px-6">Rating: {product.rating}/5</CardDescription>
       </CardHeader>
       <CardFooter className="p-0 px-6 py-2">
-        <Button className="w-full">Add | ${product.price}</Button>
+        <Button className="w-full" onClick={handleAddProductToCart}>
+          Add | ${product.price}
+        </Button>
       </CardFooter>
     </Card>
   );

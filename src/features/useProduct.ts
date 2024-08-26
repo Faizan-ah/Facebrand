@@ -1,5 +1,5 @@
 import { createProduct, getAllProducts } from "@/api/products";
-import { Product } from "@/types/Product";
+import { Product } from "@/types/product";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const RESOURCE = "products";

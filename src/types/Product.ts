@@ -14,3 +14,8 @@ export interface Product {
 }
 
 export type CreateProduct = Omit<Product, "id">;
+
+export type ProductWithQuantity = {
+  product: Product;
+  quantity: number;
+};

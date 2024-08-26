@@ -12,8 +12,11 @@ export type ErrorResponse = {
 
 export type User = {
   id: string;
-  fullName: string;
-  phone: number;
+  firstName: string;
+  lastName: string;
+  address: null;
   email: string;
+  phoneNumber: string;
+  birthDate: string;
   role: string;
 };

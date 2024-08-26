@@ -1,8 +1,10 @@
-import { Button } from "../components/ui/button";
-import { CreateProduct, Product } from "@/types/Product";
 import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+
+import { Button } from "../components/ui/button";
+import { Product } from "@/types/product";
 import { Can } from "@/components/Can";
-import { useAddProduct, useGetProduct } from "@/features/useProduct";
+import { useGetProduct } from "@/features/useProduct";
 import { useDebounce } from "@/hooks/customHooks";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,31 +15,19 @@ import {
   SelectItem,
   SelectValue
 } from "@/components/ui/select";
-import { Controller, useForm } from "react-hook-form";
-import ProductCard from "./product/ProductCard";
+import ProductCard from "@/components/product/ProductCard";
+import Modal from "@/components/Modal";
+import DisplayCart from "@/components/product/DisplayCart";
 
 // TODO: seperate into proper components
 const Home = () => {
-  const { register, watch, control, setValue, getValues } = useForm<{
+  const { register, watch, control, setValue } = useForm<{
     search: string;
     sortBy: string;
   }>();
 
-  const [newProduct] = useState<CreateProduct>({
-    name: "Wireless Headphones",
-    price: 199.99,
-    description: "High-quality wireless headphones with noise cancellation.",
-    images: [
-      "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQTQ3?wid=2000&hei=2000&fmt=jpeg&qlt=90&.v=1687660671363"
-    ],
-    color: "Black",
-    meta: {
-      category: "Electronics",
-      subcategory: "Audio"
-    },
-    rating: 4.5,
-    quantity: 100
-  });
+  const [open, setOpen] = useState(false);
+
   const debouncedSearchTerm = useDebounce(watch("search"), 1000);
   const sortOptions = [
     { label: "Price: High to Low", value: "ph" },
@@ -46,9 +36,11 @@ const Home = () => {
     { label: "Names Descending", value: "dsc" },
     { label: "Top rated", value: "tr" }
   ];
+  const userId = "b7838adc-b8d8-4a29-917b-afd20e2c5066";
+
   useEffect(() => {
     const token =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQ1MDg5NzYsImV4cCI6MTcyNDU5NTM3Nn0.Vt6FAMfRiA1xrt_9Kd5GSOAvLz1G6C55eLP2f0vraLxCJXU6GkVKG9ldA9nZPyaR";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQ1OTgyNTUsImV4cCI6MTcyNDY4NDY1NX0.g2bAdPZIDkYwD1p6vfrzE6_W1ilSlM3IETPqptaFORWjlSFZv6zj8X2OUX0tOb7w";
     localStorage.setItem("authToken", token);
   }, []);
 
@@ -56,28 +48,36 @@ const Home = () => {
     data: products,
     isLoading,
     isError
-  } = useGetProduct(debouncedSearchTerm, getValues("sortBy"));
-  const addProduct = useAddProduct();
+  } = useGetProduct(debouncedSearchTerm, watch("sortBy"));
 
-  if (isLoading) return <div>Loading...</div>;
+  const toggleModal = () => setOpen(!open);
+
   if (isError) return <div>Error fetching products.</div>;
 
   return (
     <div className="flex flex-col justify-center items-center flex-wrap">
       <h1 className="text-2xl my-2">Welcome!</h1>
-      <Can
-        permission="PRODUCT:ADD"
-        permissionType="actions"
-        yes={() => <Button onClick={() => addProduct.mutate(newProduct)}>Add product</Button>}
-      />
+      <Button style={{ minWidth: "asd" }} onClick={toggleModal}>
+        Cart
+      </Button>
+      <Modal style={{ minWidth: "400px" }} open={open} toggleModal={toggleModal} modalTitle="Cart">
+        <DisplayCart userId={userId} />
+      </Modal>
+
       <div className="flex gap-5 my-3">
-        <Input type="search" {...register("search")} placeholder="Search products.." />
+        <Input
+          type="search"
+          disabled={isLoading}
+          {...register("search")}
+          placeholder="Search products.."
+        />
         <Controller
           name="sortBy"
           control={control}
           defaultValue=""
           render={({ field }) => (
             <Select
+              disabled={isLoading}
               value={field.value}
               onValueChange={(value) => {
                 field.onChange(value);
@@ -100,17 +100,22 @@ const Home = () => {
           )}
         />
       </div>
-      <Can
-        permission="PRODUCT:GET"
-        permissionType="actions"
-        yes={() => (
-          <div className="grid grid-cols-4 gap-10 my-2">
-            {products.map((product: Product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        )}
-      />
+
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <Can
+          permission="PRODUCT:GET"
+          permissionType="actions"
+          yes={() => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 my-2">
+              {products.map((product: Product) => (
+                <ProductCard key={product.id} product={product} userId={userId} />
+              ))}
+            </div>
+          )}
+        />
+      )}
     </div>
   );
 };

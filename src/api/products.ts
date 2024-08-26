@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import api from ".";
-import { CreateProduct, Product } from "../types/Product";
+import { CreateProduct, Product } from "../types/product";
 
 export const getAllProducts = async () => {
   try {
