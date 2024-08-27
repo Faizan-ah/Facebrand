@@ -10,7 +10,7 @@ export interface Product {
     subcategory?: string;
   };
   rating: number;
-  quantity: number;
+  stock: number;
 }
 
 export type CreateProduct = Omit<Product, "id">;

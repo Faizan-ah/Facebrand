@@ -1,6 +1,6 @@
 import React from "react";
 import "react-responsive-modal/styles.css";
-import { Modal } from "react-responsive-modal";
+import { Modal as CustomModal } from "react-responsive-modal";
 
 interface Props {
   toggleModal: () => void;
@@ -10,10 +10,10 @@ interface Props {
   style?: React.CSSProperties;
   className?: string;
 }
-const CustomModal = (props: Props) => {
+const Modal = (props: Props) => {
   const { open, toggleModal, children, modalTitle, style, className } = props;
   return (
-    <Modal
+    <CustomModal
       styles={{ modal: style ?? { minWidth: "200px" } }}
       classNames={{ modal: `rounded-md ${className || ""}` }}
       open={open}
@@ -22,8 +22,8 @@ const CustomModal = (props: Props) => {
     >
       {modalTitle && <h1 className="text-lg font-semibold">{modalTitle}</h1>}
       {children}
-    </Modal>
+    </CustomModal>
   );
 };
 
-export default CustomModal;
+export default Modal;

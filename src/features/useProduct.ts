@@ -1,4 +1,4 @@
-import { createProduct, getAllProducts } from "@/api/products";
+import { createProduct, deleteProduct, getAllProducts } from "@/api/products";
 import { Product } from "@/types/product";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -8,7 +8,7 @@ const getQuertKeys = (id?: string, searchQuery = "", sortBy = "") => {
   return id ? [RESOURCE, id, { searchQuery, sortBy }] : [RESOURCE, { searchQuery, sortBy }];
 };
 // GET ALL PRODUCTS
-export const useGetProduct = (searchQuery = "", sortBy = "") => {
+export const useGetProducts = (searchQuery = "", sortBy = "") => {
   return useQuery({
     queryKey: getQuertKeys(undefined, searchQuery, sortBy),
     queryFn: getAllProducts,
@@ -44,7 +44,19 @@ export const useAddProduct = () => {
   const mutation = useMutation({
     mutationFn: createProduct,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: getQuertKeys(undefined, "", "") });
+    }
+  });
+  return mutation;
+};
+
+// DELETE PRODUCT
+export const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getQuertKeys(undefined, "", "") });
     }
   });
   return mutation;

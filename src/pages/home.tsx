@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Button } from "../components/ui/button";
 import { Product } from "@/types/product";
 import { Can } from "@/components/Can";
-import { useGetProduct } from "@/features/useProduct";
+import { useGetProducts } from "@/features/useProduct";
 import { useDebounce } from "@/hooks/customHooks";
 import { Input } from "@/components/ui/input";
 import {
@@ -46,13 +46,11 @@ const Home = () => {
 
   const {
     data: products,
-    isLoading,
+    isFetching,
     isError
-  } = useGetProduct(debouncedSearchTerm, watch("sortBy"));
+  } = useGetProducts(debouncedSearchTerm, watch("sortBy"));
 
   const toggleModal = () => setOpen(!open);
-
-  if (isError) return <div>Error fetching products.</div>;
 
   return (
     <div className="flex flex-col justify-center items-center flex-wrap">
@@ -60,6 +58,7 @@ const Home = () => {
       <Button style={{ minWidth: "asd" }} onClick={toggleModal}>
         Cart
       </Button>
+      {/* //TODO: move modal inside the component */}
       <Modal style={{ minWidth: "400px" }} open={open} toggleModal={toggleModal} modalTitle="Cart">
         <DisplayCart userId={userId} />
       </Modal>
@@ -67,7 +66,7 @@ const Home = () => {
       <div className="flex gap-5 my-3">
         <Input
           type="search"
-          disabled={isLoading}
+          disabled={isFetching}
           {...register("search")}
           placeholder="Search products.."
         />
@@ -77,7 +76,7 @@ const Home = () => {
           defaultValue=""
           render={({ field }) => (
             <Select
-              disabled={isLoading}
+              disabled={isFetching}
               value={field.value}
               onValueChange={(value) => {
                 field.onChange(value);
@@ -101,8 +100,10 @@ const Home = () => {
         />
       </div>
 
-      {isLoading ? (
-        <div>Loading...</div>
+      {isFetching ? (
+        <div className="bg-cyan-400	">Loading...</div>
+      ) : isError ? (
+        <div>Error fetching products</div>
       ) : (
         <Can
           permission="PRODUCT:GET"
