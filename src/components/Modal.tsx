@@ -20,7 +20,7 @@ const Modal = (props: Props) => {
       onClose={toggleModal}
       center
     >
-      {modalTitle && <h1 className="text-lg font-semibold">{modalTitle}</h1>}
+      {modalTitle && <h1 className="text-xl font-semibold">{modalTitle}</h1>}
       {children}
     </CustomModal>
   );

@@ -4,11 +4,8 @@ export interface Product {
   price: number;
   description: string;
   images: string[];
-  color: string;
-  meta: {
-    category?: string;
-    subcategory?: string;
-  };
+  color?: string;
+  meta?: object; // Add values if needed!
   rating: number;
   stock: number;
 }
