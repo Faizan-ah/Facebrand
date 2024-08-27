@@ -22,14 +22,16 @@ interface AddNewProduct {
 
 const Product = () => {
   // TODO: validations with zod
-  // TODO: add react-toastify for errors
-  const { register, watch } = useForm<AddNewProduct>();
+  const { register, watch, reset } = useForm<AddNewProduct>();
 
   const [open, setOpen] = useState(false);
 
   const addProduct = useAddProduct();
 
-  const toggleModal = () => setOpen(!open);
+  const toggleModal = () => {
+    setOpen(!open);
+    reset();
+  };
 
   const handleAddProduct = () => {
     const product: CreateProduct = { ...watch(), rating: 0 };

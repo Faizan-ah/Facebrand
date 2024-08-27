@@ -1,4 +1,5 @@
 import { createProduct, deleteProduct, getAllProducts } from "@/api/products";
+import { displayErrorAlert, displaySuccessAlert } from "@/components/Alert";
 import { Product } from "@/types/product";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -45,6 +46,10 @@ export const useAddProduct = () => {
     mutationFn: createProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getQuertKeys(undefined, "", "") });
+      displaySuccessAlert("Product added!");
+    },
+    onError: () => {
+      displayErrorAlert("Error adding product!");
     }
   });
   return mutation;
@@ -57,6 +62,10 @@ export const useDeleteProduct = () => {
     mutationFn: deleteProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getQuertKeys(undefined, "", "") });
+      displaySuccessAlert("Product deleted!");
+    },
+    onError: () => {
+      displayErrorAlert("Error deleting product!");
     }
   });
   return mutation;
