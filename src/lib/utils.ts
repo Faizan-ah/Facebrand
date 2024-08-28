@@ -19,7 +19,7 @@ export const saveDataToLocalStorage = (key: string, data: any) => {
   return localStorage.setItem(key, JSON.stringify(data));
 };
 
-//TODO: deprecated, remove
+//! deprecated, remove later if not needed
 export const handleOnChange = <T>(
   e: React.ChangeEvent<HTMLInputElement>,
   setState: React.Dispatch<React.SetStateAction<T>>

@@ -23,6 +23,16 @@ export const createProduct = async (product: CreateProduct) => {
   }
 };
 
+export const updateProduct = async (product: Product) => {
+  try {
+    const res: AxiosResponse<GlobalResponse<Product>> = await api.put("/products", product);
+    return res.data.data;
+  } catch (error) {
+    console.error(error);
+    return Promise.reject(new Error("Something went wrong"));
+  }
+};
+
 export const deleteProduct = async (id: string) => {
   try {
     const res: AxiosResponse<GlobalResponse<Product>> = await api.delete(`/products/${id}`);

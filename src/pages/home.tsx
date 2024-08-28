@@ -19,7 +19,7 @@ import ProductCard from "@/components/product/ProductCard";
 import Modal from "@/components/Modal";
 import DisplayCart from "@/components/product/DisplayCart";
 
-// TODO: seperate into proper components
+//TODO: seperate into proper components
 const Home = () => {
   const { register, watch, control, setValue } = useForm<{
     search: string;

@@ -35,7 +35,7 @@ const ProductCard = (props: Props) => {
       <CardHeader className="p-0">
         <img
           onClick={viewProduct}
-          src={product.images.length ? product.images[0] : "/images/dummy-placeholder.png"}
+          src={product.images?.length ? product.images[0] : "/images/dummy-placeholder.png"}
           className="max-h-48 max-w-36 hover:cursor-pointer"
         />
         <CardTitle
@@ -56,8 +56,8 @@ const ProductCard = (props: Props) => {
         >
           {product.description}
         </CardDescription>
-        {/* // TODO: Implement stars */}
-        {/* // TODO: Add review count */}
+        {/* //TODO: Implement stars */}
+        {/* //TODO: Add review count */}
         <CardDescription className="px-6">Rating: {product.rating}/5</CardDescription>
       </CardHeader>
       <CardFooter className="p-0 px-6 py-2">

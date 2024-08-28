@@ -16,3 +16,11 @@ export type ProductWithQuantity = {
   product: Product;
   quantity: number;
 };
+
+export type AddOrUpdateProduct = {
+  name: string;
+  price: number;
+  description: string;
+  images: string[];
+  stock: number;
+};

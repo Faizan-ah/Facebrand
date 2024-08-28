@@ -55,6 +55,22 @@ export const useAddProduct = () => {
   return mutation;
 };
 
+// UPDATE PRODUCT
+export const useUpdateProduct = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: createProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getQuertKeys(undefined, "", "") });
+      displaySuccessAlert("Product updated!");
+    },
+    onError: () => {
+      displayErrorAlert("Error updating product!");
+    }
+  });
+  return mutation;
+};
+
 // DELETE PRODUCT
 export const useDeleteProduct = () => {
   const queryClient = useQueryClient();

@@ -8,10 +8,25 @@ import {
 } from "@/components/ui/table";
 import { useDeleteProduct, useGetProducts } from "@/features/useProduct";
 import { Button } from "../ui/button";
+import AddEditProductModal from "./AddEditProductModal";
+import { useState } from "react";
+import { Product } from "@/types/product";
 const ProductTable = () => {
   const deleteProduct = useDeleteProduct();
   const { data: products, isFetching, isError } = useGetProducts();
-
+  const [open, setOpen] = useState(false);
+  const [updateData, setUpdateData] = useState<Product>({
+    id: "",
+    name: "",
+    description: "",
+    images: [],
+    price: 0,
+    stock: 0,
+    rating: 0
+  });
+  const toggleModal = () => {
+    setOpen(!open);
+  };
   return (
     <div>
       <Table className="w-9/12 mx-auto">
@@ -41,6 +56,10 @@ const ProductTable = () => {
                   <Button
                     className="mr-2 my-1 w-16"
                     disabled={deleteProduct.isPending && deleteProduct.variables === product.id}
+                    onClick={() => {
+                      toggleModal();
+                      setUpdateData(product);
+                    }}
                   >
                     Edit
                   </Button>
@@ -62,6 +81,7 @@ const ProductTable = () => {
       ) : isError ? (
         <div className="text-center my-2">Error fetching products.</div>
       ) : null}
+      <AddEditProductModal type="Update" toggleModal={toggleModal} open={open} data={updateData} />
     </div>
   );
 };

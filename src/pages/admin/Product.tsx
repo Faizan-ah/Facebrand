@@ -2,41 +2,15 @@ import { useState } from "react";
 
 import { Can } from "@/components/Can";
 import { Button } from "@/components/ui/button";
-import { useAddProduct } from "@/features/useProduct";
-import { CreateProduct } from "@/types/product";
 import ProductTable from "@/components/admin/ProductTable";
-import Modal from "@/components/Modal";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
-import { useForm } from "react-hook-form";
-
-interface AddNewProduct {
-  name: string;
-  price: number;
-  description: string;
-  images: string[];
-  stock: number;
-}
+import AddEditProductModal from "@/components/admin/AddEditProductModal";
 
 const Product = () => {
-  // TODO: validations with zod
-  const { register, watch, reset } = useForm<AddNewProduct>();
-
   const [open, setOpen] = useState(false);
-
-  const addProduct = useAddProduct();
-
   const toggleModal = () => {
     setOpen(!open);
-    reset();
   };
 
-  const handleAddProduct = () => {
-    const product: CreateProduct = { ...watch(), rating: 0 };
-    addProduct.mutate(product, { onSuccess: toggleModal });
-  };
   return (
     <div>
       <Can
@@ -49,45 +23,7 @@ const Product = () => {
         )}
       />
       <Can permission="ADMIN_PRODUCT:VIEW" permissionType="views" yes={() => <ProductTable />} />
-      <Modal open={open} toggleModal={toggleModal} modalTitle="Add product" className="w-6/12">
-        <div className="w-full md:w-9/12 mt-6">
-          <Button>Add images</Button>
-          <div className="my-3">
-            <Label htmlFor="productName">Product name</Label>
-            <Input id="productName" placeholder="Enter name.." {...register("name")} />
-          </div>
-          <div className="my-3">
-            <Label htmlFor="productDescription">Description</Label>
-            <Textarea
-              id="productDescription"
-              placeholder="Enter description.."
-              {...register("description")}
-            />
-          </div>
-          <div className="my-3">
-            <Label htmlFor="productPrice">Price</Label>
-            <Input
-              type="number"
-              id="productPrice"
-              placeholder="Enter price.."
-              {...register("price")}
-            />
-          </div>
-          <div className="my-3">
-            <Label htmlFor="productStock">Stock</Label>
-            <Input
-              type="number"
-              id="productStock"
-              placeholder="Enter stock.."
-              {...register("stock")}
-            />
-          </div>
-        </div>
-        <Separator className="mb-3 mt-5" />
-        <Button onClick={handleAddProduct} disabled={addProduct.isPending}>
-          Add Product
-        </Button>
-      </Modal>
+      <AddEditProductModal type="Add" toggleModal={toggleModal} open={open} />
     </div>
   );
 };
