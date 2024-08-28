@@ -3,11 +3,11 @@ import { Action } from "./action";
 import { User } from "@/types/user";
 import { Cart } from "@/types/cart";
 
-export interface GlobalState {
+export type GlobalState = {
   products: Product[];
   users: User[];
   cart: Cart | null;
-}
+};
 
 export const initialState: GlobalState = {
   products: [],

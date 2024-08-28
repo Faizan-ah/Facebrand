@@ -2,9 +2,10 @@ import { Outlet } from "react-router-dom";
 import NotFound from "../pages/NotFound";
 import { Role } from "@/lib/accessControl";
 
-interface ProtectedRouteProps {
+type ProtectedRouteProps = {
   requiredRole: Role;
-}
+};
+
 export const ProtectedRoute = ({ requiredRole }: ProtectedRouteProps) => {
   //TODO: figure out auth
   // const user = localStorage.getItem("userInfo");

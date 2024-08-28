@@ -2,14 +2,15 @@ import React from "react";
 import "react-responsive-modal/styles.css";
 import { Modal as CustomModal } from "react-responsive-modal";
 
-interface Props {
+type Props = {
   toggleModal: () => void;
   open: boolean;
   children: React.ReactNode;
   modalTitle?: string;
   style?: React.CSSProperties;
   className?: string;
-}
+};
+
 const Modal = (props: Props) => {
   const { open, toggleModal, children, modalTitle, style, className } = props;
   return (

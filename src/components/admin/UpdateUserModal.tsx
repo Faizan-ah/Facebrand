@@ -8,13 +8,13 @@ import { useForm } from "react-hook-form";
 import { User } from "@/types/user";
 import { useUpdateUser } from "@/features/useUser";
 
-interface AddUserProps {
+type UpdateUserProps = {
   open: boolean;
   toggleModal: () => void;
   data: User;
-}
+};
 
-const UpdateUserModal: React.FC<AddUserProps> = ({ open, toggleModal, data }) => {
+const UpdateUserModal: React.FC<UpdateUserProps> = ({ open, toggleModal, data }) => {
   const { register, watch, reset } = useForm<User>({
     defaultValues: data
   });

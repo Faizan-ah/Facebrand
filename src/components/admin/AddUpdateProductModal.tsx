@@ -9,21 +9,21 @@ import { useAddProduct, useUpdateProduct } from "@/features/useProduct";
 import { AddOrUpdateProduct, CreateProduct, Product } from "@/types/product";
 import { Textarea } from "../ui/textarea";
 
-interface AddEditProductModalBaseProps {
+type AddEditProductModalBaseProps = {
   open: boolean;
   toggleModal: () => void;
   type: "Update" | "Add";
   data?: Product;
-}
+};
 
-interface AddProductModalProps extends AddEditProductModalBaseProps {
+type AddProductModalProps = AddEditProductModalBaseProps & {
   type: "Add";
-}
+};
 
-interface UpdateProductModalProps extends AddEditProductModalBaseProps {
+type UpdateProductModalProps = AddEditProductModalBaseProps & {
   type: "Update";
   data: Product;
-}
+};
 
 type AddEditProductModalProps = AddProductModalProps | UpdateProductModalProps;
 

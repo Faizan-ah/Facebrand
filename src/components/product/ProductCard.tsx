@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { routeNames } from "@/routes/routeNames";
 import { useAddToCart, useGetCart } from "@/features/useCart";
 
-interface Props {
+type Props = {
   product: Product;
   userId: string; //TODO: remove later
-}
+};
+
 const ProductCard = (props: Props) => {
   const navigate = useNavigate();
   const { product, userId } = props;

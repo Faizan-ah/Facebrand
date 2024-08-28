@@ -1,4 +1,4 @@
-export interface Product {
+export type Product = {
   id: string;
   name: string;
   price: number;
@@ -8,7 +8,7 @@ export interface Product {
   meta?: object; // Add values if needed!
   rating: number;
   stock: number;
-}
+};
 
 export type CreateProduct = Omit<Product, "id">;
 
