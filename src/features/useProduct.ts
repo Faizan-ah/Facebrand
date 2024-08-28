@@ -1,4 +1,4 @@
-import { createProduct, deleteProduct, getAllProducts, updateProduct } from "@/api/products";
+import { createProduct, deleteProduct, getAllProducts, updateProduct } from "@/api/product";
 import { displayErrorAlert, displaySuccessAlert } from "@/components/Alert";
 import { Product } from "@/types/product";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

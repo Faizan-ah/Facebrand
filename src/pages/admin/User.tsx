@@ -1,20 +1,18 @@
-import { useState } from "react";
-
 import { Can } from "@/components/Can";
-import AddEditProductModal from "@/components/admin/AddEditProductModal";
 import UserTable from "@/components/admin/UserTable";
 
 const User = () => {
-  const [open, setOpen] = useState(false);
-  const toggleModal = () => {
-    setOpen(!open);
-  };
-
   return (
-    <div>
-      <Can permission="ADMIN_PRODUCT:VIEW" permissionType="views" yes={() => <UserTable />} />
-      <AddEditProductModal type="Add" toggleModal={toggleModal} open={open} />
-    </div>
+    <Can
+      permission="ADMIN_PRODUCT:VIEW"
+      permissionType="views"
+      yes={() => (
+        <div>
+          <h1 className="text-3xl font-semibold text-center my-3">Users</h1>
+          <UserTable />
+        </div>
+      )}
+    />
   );
 };
 

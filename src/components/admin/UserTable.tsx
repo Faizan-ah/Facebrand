@@ -9,12 +9,24 @@ import {
   TableRow
 } from "@/components/ui/table";
 import { Button } from "../ui/button";
-import { useGetUsers } from "@/features/useUser";
+import { useDeleteUser, useGetUsers } from "@/features/useUser";
+import { User } from "@/types/user";
+import UpdateUserModal from "./UpdateUserModal";
 
 const UserTable = () => {
-  const { data: users, isFetching, isError } = useGetUsers();
   const [open, setOpen] = useState(false);
-
+  const [currentUser, setCurrentUser] = useState<User>({
+    id: "",
+    firstName: "",
+    lastName: "",
+    address: "",
+    email: "",
+    phoneNumber: "",
+    birthDate: "",
+    role: ""
+  });
+  const { data: users, isFetching, isError } = useGetUsers();
+  const deleteUser = useDeleteUser();
   const toggleModal = () => {
     setOpen(!open);
   };
@@ -38,7 +50,7 @@ const UserTable = () => {
               <TableRow key={user.id}>
                 <TableCell className="w-56">{user.firstName + " " + user.lastName}</TableCell>
                 <TableCell className="max-w-[200px] truncate" title={user.address}>
-                  {user.address ?? "-"}
+                  {user.address && user.address.trim() ? user.address : "-"}
                 </TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.phoneNumber}</TableCell>
@@ -46,9 +58,10 @@ const UserTable = () => {
                 <TableCell>
                   <Button
                     className="mr-2 my-1 w-16"
-                    // disabled={deleteProduct.isPending && deleteProduct.variables === product.id}
+                    disabled={deleteUser.isPending && deleteUser.variables === user.id}
                     onClick={() => {
                       toggleModal();
+                      setCurrentUser(user);
                     }}
                   >
                     Edit
@@ -56,8 +69,8 @@ const UserTable = () => {
                   <Button
                     variant="destructive"
                     className="w-16"
-                    // disabled={deleteProduct.isPending && deleteProduct.variables === product.id}
-                    // onClick={() => deleteProduct.mutate(product.id)}
+                    disabled={deleteUser.isPending && deleteUser.variables === user.id}
+                    onClick={() => deleteUser.mutate(user.id)}
                   >
                     Delete
                   </Button>
@@ -71,6 +84,7 @@ const UserTable = () => {
       ) : isError ? (
         <div className="text-center my-2">Error fetching users.</div>
       ) : null}
+      <UpdateUserModal open={open} toggleModal={toggleModal} data={currentUser} />
     </div>
   );
 };
