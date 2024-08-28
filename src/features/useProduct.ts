@@ -1,4 +1,4 @@
-import { createProduct, deleteProduct, getAllProducts } from "@/api/products";
+import { createProduct, deleteProduct, getAllProducts, updateProduct } from "@/api/products";
 import { displayErrorAlert, displaySuccessAlert } from "@/components/Alert";
 import { Product } from "@/types/product";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -59,7 +59,7 @@ export const useAddProduct = () => {
 export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: createProduct,
+    mutationFn: updateProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getQuertKeys(undefined, "", "") });
       displaySuccessAlert("Product updated!");

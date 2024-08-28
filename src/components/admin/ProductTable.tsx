@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   Table,
   TableBody,
@@ -9,8 +11,8 @@ import {
 import { useDeleteProduct, useGetProducts } from "@/features/useProduct";
 import { Button } from "../ui/button";
 import AddEditProductModal from "./AddEditProductModal";
-import { useState } from "react";
 import { Product } from "@/types/product";
+
 const ProductTable = () => {
   const deleteProduct = useDeleteProduct();
   const { data: products, isFetching, isError } = useGetProducts();
