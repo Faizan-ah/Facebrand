@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "../ui/button";
 import { Product, ProductWithQuantity } from "@/types/product";
 import { useAddToCart, useGetCart } from "@/features/useCart";
@@ -18,10 +17,9 @@ const DisplayCart = (props: { userId: string }) => {
       productId: product.id,
       quantity: increment ? currentQuantity + 1 : currentQuantity - 1
     };
-
+    //TODO: use global state when cart is moved to navbar
     addToCart.mutate(cartBody);
   };
-
   const getTotalPrice = (product: ProductWithQuantity) => product.product.price * product.quantity;
 
   return (

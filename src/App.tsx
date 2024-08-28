@@ -9,6 +9,7 @@ import { adminRoutes, publicRoutes, userRoutes } from "@/routes/routes";
 import { ProtectedRoute } from "@/routes/ProtectedRoutes";
 import NotFound from "@/pages/NotFound";
 import { ROLE_ADMIN, ROLE_USER } from "@/lib/accessControl";
+import { GlobalStateProvider } from "@/store/globalContext";
 
 const router = createBrowserRouter([
   {
@@ -41,10 +42,10 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div>
+    <GlobalStateProvider>
       <ToastContainer />
       <RouterProvider router={router} />;
-    </div>
+    </GlobalStateProvider>
   );
 }
 

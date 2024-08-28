@@ -5,7 +5,7 @@ import { Button } from "../components/ui/button";
 import { Product } from "@/types/product";
 import { Can } from "@/components/Can";
 import { useGetProducts } from "@/features/useProduct";
-import { useDebounce } from "@/hooks/customHooks";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Input } from "@/components/ui/input";
 import {
   Select,

@@ -2,7 +2,7 @@ import { addToCart, createEmptyCart, getUserCart } from "@/api/cart";
 import { displayErrorAlert } from "@/components/Alert";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const RESOURCE = "carts";
+const RESOURCE = "cart";
 
 const getQuertKeys = () => {
   return [RESOURCE];
@@ -21,7 +21,7 @@ export const useAddToCart = () => {
   const mutation = useMutation({
     mutationFn: addToCart,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["carts"] });
+      queryClient.invalidateQueries({ queryKey: getQuertKeys() });
     },
     onError: () => {
       displayErrorAlert("Error updating cart!");

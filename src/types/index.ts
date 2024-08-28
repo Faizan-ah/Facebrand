@@ -9,14 +9,3 @@ export type ErrorResponse = {
   statusCode: number;
   timestamp: Date;
 };
-
-export type User = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  address: null;
-  email: string;
-  phoneNumber: string;
-  birthDate: string;
-  role: string;
-};

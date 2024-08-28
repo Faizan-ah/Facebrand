@@ -9,3 +9,14 @@ export type DecodedUser = {
   nameidentifier: string;
   role: Role;
 };
+
+export type User = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  address: null;
+  email: string;
+  phoneNumber: string;
+  birthDate: string;
+  role: string;
+};
