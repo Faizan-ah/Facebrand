@@ -1,7 +1,8 @@
 import { Cart, CartCreate } from "@/types/cart";
-import api from ".";
+
 import { AxiosResponse } from "axios";
 import { GlobalResponse } from "@/types";
+import { api, authApi } from ".";
 
 export const createEmptyCart = (): Cart => ({
   cartId: null,
@@ -12,7 +13,7 @@ export const createEmptyCart = (): Cart => ({
 //GET CART
 export const getUserCart = async (id: string) => {
   try {
-    const response: AxiosResponse<GlobalResponse<Cart>> = await api.get("/carts/" + id);
+    const response: AxiosResponse<GlobalResponse<Cart>> = await authApi.get("/carts/" + id);
     return response.data.data ?? createEmptyCart();
   } catch (error) {
     console.error("Error fetching cart:", error);

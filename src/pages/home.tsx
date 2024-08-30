@@ -18,6 +18,8 @@ import {
 import ProductCard from "@/components/product/ProductCard";
 import Modal from "@/components/Modal";
 import DisplayCart from "@/components/product/DisplayCart";
+import { getDataFromLocalStorage } from "@/lib/utils";
+import { User } from "@/types/user";
 
 //TODO: seperate into proper components
 const Home = () => {
@@ -36,13 +38,12 @@ const Home = () => {
     { label: "Names Descending", value: "dsc" },
     { label: "Top rated", value: "tr" }
   ];
-  const userId = "b7838adc-b8d8-4a29-917b-afd20e2c5066";
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    const token =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQ4NDYzMjYsImV4cCI6MTcyNDkzMjcyNn0._koR6WMvpVN6dps8iH23PnILrmJTs0z6cn_-NWJquX_YjKbZvvG11alruXAhLjYL";
-    localStorage.setItem("authToken", token);
-  }, []);
+    const user: User = getDataFromLocalStorage("user");
+    setUserId(user?.id);
+  }, [userId]);
 
   const {
     data: products,

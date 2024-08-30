@@ -7,26 +7,31 @@ import { useAddToCart, useGetCart } from "@/features/useCart";
 
 type Props = {
   product: Product;
-  userId: string; //TODO: remove later
+  userId: string;
 };
 
 const ProductCard = (props: Props) => {
   const navigate = useNavigate();
   const { product, userId } = props;
   const addToCart = useAddToCart();
+
   //TODO: find a better solution when cart structure is good
-  const { data: cart } = useGetCart(userId);
+  const { data: cart } = userId?.trim() ? useGetCart(userId) : { data: undefined };
 
   const handleAddProductToCart = () => {
-    const currentQuantity = cart?.products?.find((p) => p.product.id === product.id)?.quantity ?? 0;
+    if (userId) {
+      const currentQuantity =
+        cart?.products?.find((p) => p.product.id === product.id)?.quantity ?? 0;
+      const cartBody = {
+        userId: userId,
+        productId: product.id,
+        quantity: currentQuantity + 1
+      };
 
-    const cartBody = {
-      userId: userId,
-      productId: product.id,
-      quantity: currentQuantity + 1
-    };
-
-    addToCart.mutate(cartBody);
+      addToCart.mutate(cartBody);
+    } else {
+      navigate(routeNames.public.login);
+    }
   };
 
   const viewProduct = () =>

@@ -1,4 +1,5 @@
-import axios from "axios";
+import { getDataFromLocalStorage } from "@/lib/utils";
+import axios, { isAxiosError } from "axios";
 
 const isDevelopment = import.meta.env.MODE === "development";
 let baseURL = "http://localhost:8080/api/v1";
@@ -12,10 +13,14 @@ const api = axios.create({
   baseURL
 });
 
+const authApi = axios.create({
+  baseURL
+});
+
 // Request interceptor to add headers
-api.interceptors.request.use(
+authApi.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("authToken");
+    const token = getDataFromLocalStorage("authToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -38,4 +43,4 @@ api.interceptors.request.use(
 //     return Promise.reject(error);
 //   }
 // );
-export default api;
+export { api, authApi, isAxiosError };

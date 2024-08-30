@@ -20,3 +20,10 @@ export type User = {
   birthDate: string;
   role: string;
 };
+
+export type UserLogin = {
+  email: string;
+  password: string;
+};
+
+export type UserRegister = Omit<User, "id" | "role"> & { password: string };

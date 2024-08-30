@@ -1,6 +1,12 @@
 import moment from "moment";
 
 const DATE_TIME_FORMAT = "DD/MM/YYYY - hh:mm a";
+const SERVER_DATE_FORMAT = "DD-MM-YYYY";
+
+export const convertToServerDateFormat = (date: string | Date) => {
+  return moment(date).format(SERVER_DATE_FORMAT);
+};
+
 export const convertTimestampToDateTimeFormat = (date: string | Date) => {
   return moment(date).format(DATE_TIME_FORMAT);
 };

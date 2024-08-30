@@ -22,6 +22,12 @@ const Navbar = () => {
             <li className="font-bold mx-2">
               <NavLink to={routeNames.admin.dashboard}>Admin</NavLink>
             </li>
+            <li className="font-bold mx-2">
+              <NavLink to={routeNames.public.login}>Login</NavLink>
+            </li>
+            <li className="font-bold mx-2">
+              <NavLink to={routeNames.public.register}>Register</NavLink>
+            </li>
           </ul>
         ) : (
           <ul className="flex flex-row mr-auto">

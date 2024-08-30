@@ -10,7 +10,7 @@ type Props = {
   style?: React.CSSProperties;
   className?: string;
 };
-
+//TODO: remove with shad/cn dialog
 const Modal = (props: Props) => {
   const { open, toggleModal, children, modalTitle, style, className } = props;
   return (

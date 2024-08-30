@@ -7,12 +7,14 @@ export type GlobalState = {
   products: Product[];
   users: User[];
   cart: Cart | null;
+  loggedInUser: User | null;
 };
 
 export const initialState: GlobalState = {
   products: [],
   users: [],
-  cart: null
+  cart: null,
+  loggedInUser: null
 };
 
 export const globalReducer = (state: GlobalState, action: Action): GlobalState => {
@@ -21,6 +23,8 @@ export const globalReducer = (state: GlobalState, action: Action): GlobalState =
       return { ...state, products: action.payload };
     case "SET_USERS":
       return { ...state, users: action.payload };
+    case "SET_USER":
+      return { ...state, loggedInUser: action.payload };
     case "SET_CART":
       return { ...state, cart: action.payload };
     default:

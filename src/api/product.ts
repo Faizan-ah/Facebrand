@@ -1,7 +1,8 @@
 import { AxiosResponse } from "axios";
-import api from ".";
+
 import { CreateProduct, Product } from "../types/product";
 import { GlobalResponse } from "@/types";
+import { api, authApi } from ".";
 
 export const getAllProducts = async () => {
   try {
@@ -15,7 +16,7 @@ export const getAllProducts = async () => {
 
 export const createProduct = async (product: CreateProduct) => {
   try {
-    const res: AxiosResponse<GlobalResponse<Product>> = await api.post("/products", product);
+    const res: AxiosResponse<GlobalResponse<Product>> = await authApi.post("/products", product);
     return res.data.data;
   } catch (error) {
     console.error(error);
@@ -25,7 +26,7 @@ export const createProduct = async (product: CreateProduct) => {
 
 export const updateProduct = async (product: Product) => {
   try {
-    const res: AxiosResponse<GlobalResponse<Product>> = await api.put("/products", product);
+    const res: AxiosResponse<GlobalResponse<Product>> = await authApi.put("/products", product);
     return res.data.data;
   } catch (error) {
     console.error(error);
@@ -35,7 +36,7 @@ export const updateProduct = async (product: Product) => {
 
 export const deleteProduct = async (id: string) => {
   try {
-    const res: AxiosResponse<GlobalResponse<Product>> = await api.delete(`/products/${id}`);
+    const res: AxiosResponse<GlobalResponse<Product>> = await authApi.delete(`/products/${id}`);
     return res.data.data;
   } catch (error) {
     console.error(error);

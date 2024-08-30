@@ -30,6 +30,7 @@ const UserTable = () => {
   const toggleModal = () => {
     setOpen(!open);
   };
+
   return (
     <div>
       <Table className="w-9/12 mx-auto">

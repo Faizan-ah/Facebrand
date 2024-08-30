@@ -5,9 +5,14 @@ import Product from "@/pages/admin/Product";
 import Order from "@/pages/admin/Order";
 import User from "@/pages/admin/User";
 import ProductDetails from "@/pages/product/index";
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
+
 export const publicRoutes = [
   { path: routeNames.public.home, element: <Home /> },
-  { path: routeNames.public.productDetails + ":id", element: <ProductDetails /> }
+  { path: routeNames.public.productDetails + ":id", element: <ProductDetails /> },
+  { path: routeNames.public.login, element: <Login /> },
+  { path: routeNames.public.register, element: <Register /> }
 ];
 
 export const adminRoutes = [

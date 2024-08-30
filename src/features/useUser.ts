@@ -1,4 +1,4 @@
-import { deleteUser, getAllUsers, updateUser } from "@/api/user";
+import { deleteUser, getAllUsers, loginUser, registerUser, updateUser } from "@/api/user";
 import { displayErrorAlert, displaySuccessAlert } from "@/components/Alert";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -15,6 +15,32 @@ export const useGetUsers = () => {
     queryFn: getAllUsers,
     initialData: []
   });
+};
+
+// LOGIN USER
+export const useLoginUser = () => {
+  const mutation = useMutation({
+    mutationFn: loginUser,
+    onError: (error) => {
+      if (error.message.toLocaleLowerCase().includes("bad credentials")) {
+        displayErrorAlert("Invalid credentials!");
+      } else {
+        displayErrorAlert("Error logging in!");
+      }
+    }
+  });
+  return mutation;
+};
+
+// LOGIN USER
+export const useRegisterUser = () => {
+  const mutation = useMutation({
+    mutationFn: registerUser,
+    onError: () => {
+      displayErrorAlert("Error with registering, try again later!");
+    }
+  });
+  return mutation;
 };
 
 // UPDATE USER
