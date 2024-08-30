@@ -1,4 +1,4 @@
-import { User } from ".";
+import { User } from "./user";
 import { ProductWithQuantity } from "./product";
 
 export type CartCreate = {

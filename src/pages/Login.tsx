@@ -7,7 +7,6 @@ import { useLoginUser } from "@/features/useUser";
 import { useNavigate } from "react-router-dom";
 import { routeNames } from "@/routes/routeNames";
 import { saveDataToLocalStorage } from "@/lib/utils";
-import { useGlobalState } from "@/hooks/useGlobalState";
 
 const Login = () => {
   const { register, watch } = useForm<UserLogin>();
