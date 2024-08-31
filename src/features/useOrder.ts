@@ -1,4 +1,4 @@
-import { deleteOrder, getAllOrders, updateOrder } from "@/api/order";
+import { createOrder, deleteOrder, getAllOrders, updateOrder } from "@/api/order";
 import { displayErrorAlert, displaySuccessAlert } from "@/components/Alert";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -15,6 +15,22 @@ export const useGetOrders = () => {
     queryFn: getAllOrders,
     initialData: []
   });
+};
+
+// UPDATE ORDER
+export const useCreateOrder = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: createOrder,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getQuertKeys() });
+      displaySuccessAlert("Payment done successfully!");
+    },
+    onError: () => {
+      displayErrorAlert("Error with payment!");
+    }
+  });
+  return mutation;
 };
 
 // UPDATE ORDER

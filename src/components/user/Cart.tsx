@@ -29,7 +29,7 @@ const Cart = () => {
   const addToCart = useAddToCart();
 
   const handleCheckout = () => {
-    navigate(routeNames.user.checkout);
+    navigate(routeNames.user.checkout, { state: { cart, userId } });
   };
 
   //TODO: maybe remove this when cart is properly structured

@@ -1,3 +1,5 @@
+import { Product } from "./product";
+
 export type Order = {
   id: string;
   userId: string;
@@ -5,4 +7,7 @@ export type Order = {
   comments: string;
   status: string;
   address: string;
+  products: Product[];
 };
+
+export type OrderCreate = Omit<Order, "id" | "dateTime">;
