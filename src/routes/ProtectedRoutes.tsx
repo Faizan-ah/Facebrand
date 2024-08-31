@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import NotFound from "../pages/NotFound";
 import { Role } from "@/lib/accessControl";
+import Login from "@/pages/Login";
 
 type ProtectedRouteProps = {
   requiredRole: Role;
@@ -10,11 +11,11 @@ export const ProtectedRoute = ({ requiredRole }: ProtectedRouteProps) => {
   //TODO: figure out auth
   // const user = localStorage.getItem("userInfo");
   const isUserLoggedIn = true; //user?.isUserLoggedIn;
-  const isAdmin = true; //user?.isAdmin;
+  const isAdmin = false; //user?.isAdmin;
 
   if (!isUserLoggedIn) {
     //TODO: reroute to <Login />;
-    return <></>;
+    return <Login />;
   }
 
   // Reroutes to notfound if user or admin tries to access each other

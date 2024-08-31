@@ -10,7 +10,9 @@ export const routeNames = {
   },
   user: {
     parentRoute: "/user",
-    profile: "/user/profile"
+    profile: "/user/profile",
+    cart: "/user/cart",
+    checkout: "/user/checkout"
   },
   admin: {
     parentRoute: "/admin",

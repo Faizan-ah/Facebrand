@@ -1,3 +1,5 @@
+import { Cart } from "@/types/cart";
+import { ProductWithQuantity } from "@/types/product";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -17,6 +19,15 @@ export const getDataFromLocalStorage = (key: string) => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const saveDataToLocalStorage = (key: string, data: any) => {
   return localStorage.setItem(key, JSON.stringify(data));
+};
+
+export const getTotalProductPrice = (product: ProductWithQuantity) =>
+  product.product.price * product.quantity;
+
+export const calculateTotalCartAmount = (cart: Cart) => {
+  return cart.products.reduce((a, b) => {
+    return a + getTotalProductPrice(b);
+  }, 0);
 };
 
 //! deprecated, remove later if not needed

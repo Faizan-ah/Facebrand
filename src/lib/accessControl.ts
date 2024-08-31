@@ -12,8 +12,15 @@ export type RoleControl = {
 
 export type PermissionCategory = keyof RoleControl[Role];
 
-type Page = "HOME" | "DASHBOARD" | "ADMIN_PRODUCT" | "ADMIN_USER" | "ADMIN_ORDER";
-type Resource = "PRODUCT" | "USER";
+type Page =
+  | "HOME"
+  | "DASHBOARD"
+  | "ADMIN_PRODUCT"
+  | "ADMIN_USER"
+  | "ADMIN_ORDER"
+  | "CART"
+  | "CHECKOUT";
+type Resource = "PRODUCT" | "USER" | "CART";
 type Method = "GET" | "ADD" | "EDIT" | "REMOVE";
 
 export type ResourcePermission = `${Resource}:${Method}`;
@@ -26,12 +33,14 @@ export const RBAC_ROLES: RoleControl = {
       "DASHBOARD:VIEW",
       "ADMIN_PRODUCT:VIEW",
       "ADMIN_USER:VIEW",
-      "ADMIN_ORDER:VIEW"
+      "ADMIN_ORDER:VIEW",
+      "CART:VIEW",
+      "CHECKOUT:VIEW"
     ],
     actions: ["PRODUCT:GET", "PRODUCT:REMOVE", "PRODUCT:ADD"]
   },
   USER: {
-    views: ["HOME:VIEW"],
-    actions: ["PRODUCT:GET"]
+    views: ["HOME:VIEW", "CART:VIEW", "CHECKOUT:VIEW"],
+    actions: ["PRODUCT:GET", "CART:GET"]
   }
 };

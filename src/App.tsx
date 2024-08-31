@@ -44,7 +44,7 @@ function App() {
   return (
     <GlobalStateProvider>
       <ToastContainer />
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </GlobalStateProvider>
   );
 }

@@ -8,11 +8,13 @@ const getQuertKeys = () => {
   return [RESOURCE];
 };
 
-export const useGetCart = (id: string) => {
+export const useGetCart = (id: string, options = {}) => {
   return useQuery({
     queryKey: getQuertKeys(),
     queryFn: () => getUserCart(id),
-    initialData: createEmptyCart()
+    initialData: createEmptyCart(),
+    enabled: !!id,
+    ...options
   });
 };
 

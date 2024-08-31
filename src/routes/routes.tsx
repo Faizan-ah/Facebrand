@@ -7,6 +7,7 @@ import User from "@/pages/admin/User";
 import ProductDetails from "@/pages/product/index";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import Cart from "@/components/user/Cart";
 
 export const publicRoutes = [
   { path: routeNames.public.home, element: <Home /> },
@@ -22,4 +23,4 @@ export const adminRoutes = [
   { path: routeNames.admin.users, element: <User /> }
 ];
 
-export const userRoutes = [];
+export const userRoutes = [{ path: routeNames.user.cart, element: <Cart /> }];
