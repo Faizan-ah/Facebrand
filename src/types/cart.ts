@@ -2,7 +2,7 @@ import { User } from "./user";
 import { ProductWithQuantity } from "./product";
 
 export type CartCreate = {
-  userId: string;
+  userId: string | undefined;
   productId: string;
   quantity: number;
 };

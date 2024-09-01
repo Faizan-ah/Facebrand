@@ -1,4 +1,6 @@
-import { getDataFromLocalStorage } from "@/lib/utils";
+import { TOKEN_KEY, USER_KEY } from "@/lib/constants";
+import { getDataFromLocalStorage, removeDataFromLocalStorage } from "@/lib/utils";
+import { routeNames } from "@/routes/routeNames";
 import axios, { isAxiosError } from "axios";
 
 const isDevelopment = import.meta.env.MODE === "development";
@@ -31,16 +33,20 @@ authApi.interceptors.request.use(
   }
 );
 
-// Response interceptor for handling data and errors
-// api.interceptors.response.use(
-//   (response) => {
-//     if (response.data.error) {
-//       return Promise.reject(new Error(response.data.error));
-//     }
-//     return response.data.data;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
+// Response interceptor to handle token expiration and errors
+authApi.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (isAxiosError(error) && (error.response?.status === 403 || error.response?.status === 401)) {
+      removeDataFromLocalStorage(TOKEN_KEY);
+      removeDataFromLocalStorage(USER_KEY);
+
+      window.location.href = routeNames.public.login;
+    }
+
+    return Promise.reject(error);
+  }
+);
 export { api, authApi, isAxiosError };

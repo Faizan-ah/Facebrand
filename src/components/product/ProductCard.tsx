@@ -4,6 +4,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/comp
 import { useNavigate } from "react-router-dom";
 import { routeNames } from "@/routes/routeNames";
 import { useAddToCart, useGetCart } from "@/features/useCart";
+import { useGlobalState } from "@/hooks/useGlobalState";
 
 type Props = {
   product: Product;
@@ -12,26 +13,29 @@ type Props = {
 
 const ProductCard = (props: Props) => {
   const navigate = useNavigate();
-  const { product, userId } = props;
+  const { product } = props;
+  const { state } = useGlobalState();
   const addToCart = useAddToCart();
+  const userId = state.loggedInUser?.id;
 
   //TODO: find a better solution when cart structure is good
-  const { data: cart } = userId?.trim() ? useGetCart(userId) : { data: undefined };
+  const { data: cart } = useGetCart(userId || "");
 
   const handleAddProductToCart = () => {
-    if (userId) {
-      const currentQuantity =
-        cart?.products?.find((p) => p.product.id === product.id)?.quantity ?? 0;
-      const cartBody = {
-        userId: userId,
-        productId: product.id,
-        quantity: currentQuantity + 1
-      };
-
-      addToCart.mutate(cartBody);
-    } else {
+    if (!userId) {
       navigate(routeNames.public.login);
+      return;
     }
+
+    const currentQuantity = cart?.products?.find((p) => p.product.id === product.id)?.quantity ?? 0;
+
+    const cartBody = {
+      userId: userId,
+      productId: product.id,
+      quantity: currentQuantity + 1
+    };
+
+    addToCart.mutate(cartBody);
   };
 
   const viewProduct = () =>

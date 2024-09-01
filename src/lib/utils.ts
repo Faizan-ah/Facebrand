@@ -1,11 +1,18 @@
+import { Token } from "@/types";
 import { Cart } from "@/types/cart";
 import { ProductWithQuantity } from "@/types/product";
 import { type ClassValue, clsx } from "clsx";
+import jwtDecode from "jwt-decode";
 import { twMerge } from "tailwind-merge";
+import { TOKEN_KEY } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const removeDataFromLocalStorage = (key: string) => {
+  localStorage.removeItem(key);
+};
 
 export const getDataFromLocalStorage = (key: string) => {
   const data = localStorage.getItem(key);
@@ -28,6 +35,23 @@ export const calculateTotalCartAmount = (cart: Cart) => {
   return cart.products.reduce((a, b) => {
     return a + getTotalProductPrice(b);
   }, 0);
+};
+
+export const isTokenValid = (): boolean => {
+  const token = getDataFromLocalStorage(TOKEN_KEY);
+
+  if (!token) {
+    return false;
+  }
+
+  try {
+    const decodedToken: Token = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    return decodedToken.exp > currentTime;
+  } catch (e) {
+    removeDataFromLocalStorage(TOKEN_KEY);
+    return false;
+  }
 };
 
 //! deprecated, remove later if not needed

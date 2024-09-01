@@ -9,3 +9,9 @@ export type ErrorResponse = {
   statusCode: number;
   timestamp: Date;
 };
+
+export type Token = {
+  sub: string;
+  iat: number;
+  exp: number;
+};

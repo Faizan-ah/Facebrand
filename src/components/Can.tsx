@@ -1,3 +1,4 @@
+import { useGlobalState } from "@/hooks/useGlobalState";
 import {
   Role,
   ResourcePermission,
@@ -58,8 +59,12 @@ type CanProp = {
 };
 
 export const Can = ({ permission, permissionType, yes, no = () => null }: CanProp) => {
-  //TODO: change this to be dynamic based on what the token has
-  const USER_ROLE = "ADMIN";
+  const { state } = useGlobalState();
+  const USER_ROLE: Role | undefined = state.loggedInUser?.role as Role | undefined;
 
+  if (!USER_ROLE) {
+    console.error("User role is not defined or invalid");
+    return no();
+  }
   return checkPermission(USER_ROLE, permission, permissionType) ? yes() : no();
 };

@@ -1,30 +1,31 @@
-import { Product } from "@/types/product";
 import { Action } from "./action";
 import { User } from "@/types/user";
 import { Cart } from "@/types/cart";
+import { ROLE_ADMIN } from "@/lib/accessControl";
 
 export type GlobalState = {
-  products: Product[];
-  users: User[];
   cart: Cart | null;
   loggedInUser: User | null;
+  isAuthenticated: boolean;
+  isAdmin: boolean;
 };
 
 export const initialState: GlobalState = {
-  products: [],
-  users: [],
   cart: null,
-  loggedInUser: null
+  loggedInUser: null,
+  isAuthenticated: false,
+  isAdmin: false
 };
 
 export const globalReducer = (state: GlobalState, action: Action): GlobalState => {
   switch (action.type) {
-    case "SET_PRODUCTS":
-      return { ...state, products: action.payload };
-    case "SET_USERS":
-      return { ...state, users: action.payload };
     case "SET_USER":
-      return { ...state, loggedInUser: action.payload };
+      return {
+        ...state,
+        loggedInUser: action.payload,
+        isAuthenticated: !!action.payload,
+        isAdmin: action.payload?.role === ROLE_ADMIN
+      };
     case "SET_CART":
       return { ...state, cart: action.payload };
     default:

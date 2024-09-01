@@ -3,9 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { useAddToCart, useGetCart } from "@/features/useCart";
-import { getDataFromLocalStorage } from "@/lib/utils";
 import { routeNames } from "@/routes/routeNames";
 import { Product as ProductType } from "@/types/product";
+import { useGlobalState } from "@/hooks/useGlobalState";
 
 const Product = () => {
   const navigate = useNavigate();
@@ -15,31 +15,34 @@ const Product = () => {
 
   const [fullDescription, setFullDescription] = useState(false);
 
-  const userId = getDataFromLocalStorage("user")?.id;
-  const description = fullDescription ? product.description : product.description.slice(0, 700);
-
-  //TODO: find a better solution when cart structure is good
-  const { data: cart } = userId?.trim() ? useGetCart(userId) : { data: undefined };
+  const { state } = useGlobalState();
   const addToCart = useAddToCart();
+
+  const userId = state.loggedInUser?.id;
+  const description = fullDescription ? product.description : product.description.slice(0, 700);
 
   const showFullDescriptionHandler = () => {
     setFullDescription(!fullDescription);
   };
 
-  const handleAddProductToCart = () => {
-    if (userId) {
-      const currentQuantity =
-        cart?.products?.find((p) => p.product.id === product.id)?.quantity ?? 0;
-      const cartBody = {
-        userId: userId,
-        productId: product.id,
-        quantity: currentQuantity + 1
-      };
+  //TODO: find a better solution when cart structure is good
+  const { data: cart } = useGetCart(userId || "");
 
-      addToCart.mutate(cartBody);
-    } else {
+  const handleAddProductToCart = () => {
+    if (!userId) {
       navigate(routeNames.public.login);
+      return;
     }
+
+    const currentQuantity = cart?.products?.find((p) => p.product.id === product.id)?.quantity ?? 0;
+
+    const cartBody = {
+      userId: userId,
+      productId: product.id,
+      quantity: currentQuantity + 1
+    };
+
+    addToCart.mutate(cartBody);
   };
 
   return (

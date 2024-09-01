@@ -7,18 +7,21 @@ import { useLoginUser } from "@/features/useUser";
 import { useNavigate } from "react-router-dom";
 import { routeNames } from "@/routes/routeNames";
 import { saveDataToLocalStorage } from "@/lib/utils";
+import { useGlobalState } from "@/hooks/useGlobalState";
 
 const Login = () => {
   const { register, watch } = useForm<UserLogin>();
   const loginUser = useLoginUser();
   const navigate = useNavigate();
+  const { dispatch } = useGlobalState();
 
   const handleLogin = () => {
     loginUser.mutate(watch(), {
       onSuccess: (data) => {
-        navigate(routeNames.public.home);
         saveDataToLocalStorage("authToken", data?.token);
         saveDataToLocalStorage("user", data?.user);
+        dispatch({ type: "SET_USER", payload: data?.user ?? null });
+        navigate(routeNames.public.home);
       }
     });
   };
