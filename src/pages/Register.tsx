@@ -8,12 +8,14 @@ import { convertToServerDateFormat } from "@/lib/dateUtility";
 import { routeNames } from "@/routes/routeNames";
 import { useNavigate } from "react-router-dom";
 import { saveDataToLocalStorage } from "@/lib/utils";
+import { useGlobalState } from "@/hooks/useGlobalState";
 
 const Register = () => {
   const { register, watch } = useForm<UserRegister>();
   const navigate = useNavigate();
   const registerUser = useRegisterUser();
   const login = useLoginUser();
+  const { dispatch } = useGlobalState();
 
   const handleRegister = () => {
     const loginUser = {
@@ -28,8 +30,10 @@ const Register = () => {
       onSuccess: () =>
         login.mutate(loginUser, {
           onSuccess: (data) => {
-            navigate(routeNames.public.home);
             saveDataToLocalStorage("authToken", data?.token);
+            saveDataToLocalStorage("user", data?.user);
+            dispatch({ type: "SET_USER", payload: data?.user ?? null });
+            navigate(routeNames.public.home);
           }
         })
     });
