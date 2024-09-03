@@ -3,7 +3,6 @@ import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "../components/ui/button";
 import { Product } from "@/types/product";
-import { Can } from "@/components/Can";
 import { useGetProducts } from "@/features/useProduct";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Input } from "@/components/ui/input";
@@ -106,17 +105,12 @@ const Home = () => {
       ) : isError ? (
         <div>Error fetching products</div>
       ) : (
-        <Can
-          permission="PRODUCT:GET"
-          permissionType="actions"
-          yes={() => (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 my-2">
-              {products.map((product: Product) => (
-                <ProductCard key={product.id} product={product} userId={userId} />
-              ))}
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 my-2">
+          {products.map(
+            (product: Product) =>
+              !product.deleted && <ProductCard key={product.id} product={product} userId={userId} />
           )}
-        />
+        </div>
       )}
     </div>
   );

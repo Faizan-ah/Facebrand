@@ -23,7 +23,8 @@ const OrderTable = () => {
     address: "",
     comments: "",
     dateTime: [],
-    status: ""
+    status: "",
+    products: []
   });
   const { data: orders, isFetching, isError } = useGetOrders();
   const deleteOrder = useDeleteOrder();

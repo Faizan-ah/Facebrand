@@ -8,6 +8,7 @@ export type Product = {
   meta?: object; // Add values if needed!
   rating: number;
   stock: number;
+  deleted: boolean;
 };
 
 export type CreateProduct = Omit<Product, "id">;
@@ -23,4 +24,5 @@ export type AddOrUpdateProduct = {
   description: string;
   images: string[];
   stock: number;
+  deleted: boolean;
 };

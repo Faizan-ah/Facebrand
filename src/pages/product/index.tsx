@@ -11,6 +11,7 @@ const Product = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  //TODO: fetch product by id
   const { product }: { product: ProductType } = location.state;
 
   const [fullDescription, setFullDescription] = useState(false);
@@ -51,7 +52,7 @@ const Product = () => {
         src={product.images?.length ? product.images[0] : "/images/dummy-placeholder.png"}
         className="max-h-72 max-w-72 hover:cursor-pointer "
       />
-      <div>
+      <div className="min-w-[300px]">
         <h1 className="text-3xl font-semibold py-2 mt-6">{product.name}</h1>
         <p className="min-h-[100px]">
           {description}

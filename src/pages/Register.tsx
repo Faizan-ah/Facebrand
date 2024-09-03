@@ -9,6 +9,7 @@ import { routeNames } from "@/routes/routeNames";
 import { useNavigate } from "react-router-dom";
 import { saveDataToLocalStorage } from "@/lib/utils";
 import { useGlobalState } from "@/hooks/useGlobalState";
+import { ROLE_ADMIN } from "@/lib/accessControl";
 
 const Register = () => {
   const { register, watch } = useForm<UserRegister>();
@@ -26,6 +27,7 @@ const Register = () => {
       ...watch(),
       birthDate: convertToServerDateFormat(watch("birthDate"))
     };
+    //TODO: refactor login and register code
     registerUser.mutate(user, {
       onSuccess: () =>
         login.mutate(loginUser, {
@@ -33,7 +35,9 @@ const Register = () => {
             saveDataToLocalStorage("authToken", data?.token);
             saveDataToLocalStorage("user", data?.user);
             dispatch({ type: "SET_USER", payload: data?.user ?? null });
-            navigate(routeNames.public.home);
+            data?.user.role === ROLE_ADMIN
+              ? navigate(routeNames.admin.dashboard)
+              : navigate(routeNames.public.home);
           }
         })
     });

@@ -12,6 +12,7 @@ import { useDeleteProduct, useGetProducts } from "@/features/useProduct";
 import { Button } from "../ui/button";
 import AddEditProductModal from "./AddUpdateProductModal";
 import { Product } from "@/types/product";
+import { PRODUCT_STATUS } from "@/lib/constants";
 
 const ProductTable = () => {
   const deleteProduct = useDeleteProduct();
@@ -24,11 +25,26 @@ const ProductTable = () => {
     images: [],
     price: 0,
     stock: 0,
-    rating: 0
+    rating: 0,
+    deleted: false
   });
   const toggleModal = () => {
     setOpen(!open);
   };
+
+  const displayProductStatus = (status: string) => {
+    switch (status) {
+      case PRODUCT_STATUS.ACTIVE:
+        return (
+          <span className="rounded-full p-2 font-semibold text-white  bg-blue-500">{status}</span>
+        );
+      case PRODUCT_STATUS.DELETED:
+        return (
+          <span className="rounded-full p-2 font-semibold text-white bg-red-600">{status}</span>
+        );
+    }
+  };
+
   return (
     <div>
       <Table>
@@ -39,6 +55,7 @@ const ProductTable = () => {
             <TableHead>Price</TableHead>
             <TableHead>Stock</TableHead>
             <TableHead>Rating</TableHead>
+            <TableHead className="text-center">Status</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -54,10 +71,18 @@ const ProductTable = () => {
                 <TableCell>${product.price}</TableCell>
                 <TableCell>{product.stock}</TableCell>
                 <TableCell>{product.rating}/5</TableCell>
+                <TableCell className="text-center">
+                  {displayProductStatus(
+                    product.deleted ? PRODUCT_STATUS.DELETED : PRODUCT_STATUS.ACTIVE
+                  )}
+                </TableCell>
                 <TableCell>
                   <Button
                     className="mr-2 my-1 w-16"
-                    disabled={deleteProduct.isPending && deleteProduct.variables === product.id}
+                    disabled={
+                      product.deleted ||
+                      (deleteProduct.isPending && deleteProduct.variables === product.id)
+                    }
                     onClick={() => {
                       toggleModal();
                       setCurrentProduct(product);
@@ -68,7 +93,10 @@ const ProductTable = () => {
                   <Button
                     variant="destructive"
                     className="w-16"
-                    disabled={deleteProduct.isPending && deleteProduct.variables === product.id}
+                    disabled={
+                      product.deleted ||
+                      (deleteProduct.isPending && deleteProduct.variables === product.id)
+                    }
                     onClick={() => deleteProduct.mutate(product.id)}
                   >
                     Delete

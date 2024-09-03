@@ -4,7 +4,7 @@ import { ProductWithQuantity } from "@/types/product";
 import { type ClassValue, clsx } from "clsx";
 import jwtDecode from "jwt-decode";
 import { twMerge } from "tailwind-merge";
-import { TOKEN_KEY } from "./constants";
+import { TOKEN_KEY, USER_KEY } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -52,6 +52,11 @@ export const isTokenValid = (): boolean => {
     removeDataFromLocalStorage(TOKEN_KEY);
     return false;
   }
+};
+
+export const logout = () => {
+  removeDataFromLocalStorage(TOKEN_KEY);
+  removeDataFromLocalStorage(USER_KEY);
 };
 
 //! deprecated, remove later if not needed

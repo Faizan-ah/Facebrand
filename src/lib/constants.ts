@@ -7,3 +7,8 @@ export const ORDER_STATUS = {
   DELIVERED: "DELIVERED",
   CANCELLED: "CANCELLED"
 };
+
+export const PRODUCT_STATUS = {
+  ACTIVE: "Active",
+  DELETED: "Deleted"
+};

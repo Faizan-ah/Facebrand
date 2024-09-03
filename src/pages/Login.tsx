@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { routeNames } from "@/routes/routeNames";
 import { saveDataToLocalStorage } from "@/lib/utils";
 import { useGlobalState } from "@/hooks/useGlobalState";
+import { ROLE_ADMIN } from "@/lib/accessControl";
 
 const Login = () => {
   const { register, watch } = useForm<UserLogin>();
@@ -21,7 +22,9 @@ const Login = () => {
         saveDataToLocalStorage("authToken", data?.token);
         saveDataToLocalStorage("user", data?.user);
         dispatch({ type: "SET_USER", payload: data?.user ?? null });
-        navigate(routeNames.public.home);
+        data?.user.role === ROLE_ADMIN
+          ? navigate(routeNames.admin.dashboard)
+          : navigate(routeNames.public.home);
       }
     });
   };
