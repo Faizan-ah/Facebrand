@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import AddEditProductModal from "./AddUpdateProductModal";
 import { Product } from "@/types/product";
 import { PRODUCT_STATUS } from "@/lib/constants";
+import Loader from "../Loader";
 
 const ProductTable = () => {
   const deleteProduct = useDeleteProduct();
@@ -61,6 +62,7 @@ const ProductTable = () => {
         </TableHeader>
         <TableBody>
           {!isFetching &&
+            !isError &&
             products &&
             products.map((product) => (
               <TableRow key={product.id}>
@@ -76,7 +78,7 @@ const ProductTable = () => {
                     product.deleted ? PRODUCT_STATUS.DELETED : PRODUCT_STATUS.ACTIVE
                   )}
                 </TableCell>
-                <TableCell>
+                <TableCell className="flex justify-center items-center">
                   <Button
                     className="mr-2 my-1 w-16"
                     disabled={
@@ -92,7 +94,7 @@ const ProductTable = () => {
                   </Button>
                   <Button
                     variant="destructive"
-                    className="w-16"
+                    className="w-16 "
                     disabled={
                       product.deleted ||
                       (deleteProduct.isPending && deleteProduct.variables === product.id)
@@ -107,7 +109,9 @@ const ProductTable = () => {
         </TableBody>
       </Table>
       {isFetching ? (
-        <div className="text-center my-2">Loading...</div>
+        <div className="flex justify-center items-center">
+          <Loader height="200" />
+        </div>
       ) : products.length === 0 && isError ? (
         <div className="text-center my-2">Error fetching products.</div>
       ) : products.length === 0 ? (

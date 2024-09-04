@@ -14,6 +14,7 @@ import { Order } from "@/types/order";
 import UpdateOrderModal from "./UpdateOrderModal";
 import { convertArrayTimestampToDateTimeFormat } from "@/lib/dateUtility";
 import { ORDER_STATUS } from "@/lib/constants";
+import { Loader } from "lucide-react";
 
 const OrderTable = () => {
   const [open, setOpen] = useState(false);
@@ -75,6 +76,7 @@ const OrderTable = () => {
         </TableHeader>
         <TableBody>
           {!isFetching &&
+            !isError &&
             orders &&
             orders.map((order) => (
               <TableRow key={order.id}>
@@ -113,7 +115,9 @@ const OrderTable = () => {
         </TableBody>
       </Table>
       {isFetching ? (
-        <div className="text-center my-2">Loading...</div>
+        <div className="flex justify-center items-center">
+          <Loader height="200" />
+        </div>
       ) : orders.length === 0 && isError ? (
         <div className="text-center my-2">Error fetching orders.</div>
       ) : orders.length === 0 ? (

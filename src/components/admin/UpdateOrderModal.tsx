@@ -19,6 +19,7 @@ import { useUpdateOrder } from "@/features/useOrder";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Loader from "../Loader";
 
 const status = [
   ORDER_STATUS.PENDING,
@@ -130,6 +131,13 @@ const UpdateOrderModal: React.FC<UpdateOrderProps> = ({ open, toggleModal, data 
         </div>
         <Separator className="mb-3 mt-5" />
         <Button type="submit" disabled={updateOrder.isPending}>
+          <Loader
+            width="20"
+            height="20"
+            color="white"
+            visible={updateOrder.isPending}
+            wrapperClass="mr-1 flex justify-center items-center"
+          />
           Update order
         </Button>
       </form>

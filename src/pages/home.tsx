@@ -18,6 +18,7 @@ import Modal from "@/components/Modal";
 import DisplayCart from "@/components/product/DisplayCart";
 import { getDataFromLocalStorage } from "@/lib/utils";
 import { User } from "@/types/user";
+import Loader from "@/components/Loader";
 
 //TODO: seperate into proper components
 const Home = () => {
@@ -97,7 +98,7 @@ const Home = () => {
       </div>
 
       {isFetching ? (
-        <div className="bg-cyan-400	">Loading...</div>
+        <Loader height="200" />
       ) : isError ? (
         <div>Error fetching products</div>
       ) : (

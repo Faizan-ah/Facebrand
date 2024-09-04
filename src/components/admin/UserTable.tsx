@@ -13,6 +13,7 @@ import { useDeleteUser, useGetUsers } from "@/features/useUser";
 import { User } from "@/types/user";
 import UpdateUserModal from "./UpdateUserModal";
 import { useGlobalState } from "@/hooks/useGlobalState";
+import Loader from "../Loader";
 
 const UserTable = () => {
   const [open, setOpen] = useState(false);
@@ -49,6 +50,7 @@ const UserTable = () => {
         </TableHeader>
         <TableBody>
           {!isFetching &&
+            !isError &&
             users &&
             users.map((user) => (
               <TableRow key={user.id}>
@@ -88,7 +90,9 @@ const UserTable = () => {
         </TableBody>
       </Table>
       {isFetching ? (
-        <div className="text-center my-2">Loading...</div>
+        <div className="flex justify-center items-center">
+          <Loader height="200" />
+        </div>
       ) : isError ? (
         <div className="text-center my-2">Error fetching users.</div>
       ) : null}

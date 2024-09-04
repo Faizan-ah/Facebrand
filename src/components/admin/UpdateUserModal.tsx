@@ -9,6 +9,7 @@ import { User, UserUpdate } from "@/types/user";
 import { useUpdateUser } from "@/features/useUser";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Loader from "../Loader";
 
 const UserSchema: ZodType<UserUpdate> = z.object({
   firstName: z.string().min(1, { message: "First name is required" }),
@@ -88,6 +89,13 @@ const UpdateUserModal: React.FC<UpdateUserProps> = ({ open, toggleModal, data })
         </div>
         <Separator className="mb-3 mt-5" />
         <Button type="submit" disabled={updateUser.isPending}>
+          <Loader
+            width="20"
+            height="20"
+            color="white"
+            visible={updateUser.isPending}
+            wrapperClass="mr-1 flex justify-center items-center"
+          />
           Update user
         </Button>
       </form>

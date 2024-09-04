@@ -10,6 +10,7 @@ import { AddOrUpdateProduct, CreateProduct, Product } from "@/types/product";
 import { Textarea } from "../ui/textarea";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Loader from "../Loader";
 
 //TODO: add type
 const ProductSchema = z.object({
@@ -128,6 +129,13 @@ const AddEditProductModal: React.FC<AddEditProductModalProps> = ({
           </div>
           <Separator className="mb-3 mt-5" />
           <Button type="submit" disabled={addProduct.isPending || updateProduct.isPending}>
+            <Loader
+              width="20"
+              height="20"
+              color="white"
+              visible={addProduct.isPending || updateProduct.isPending}
+              wrapperClass="mr-1 flex justify-center items-center"
+            />
             {`${type} Product`}
           </Button>
         </form>
