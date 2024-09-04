@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { calculateTotalCartAmount } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -11,23 +10,49 @@ import { OrderCreate } from "@/types/order";
 import { Product, ProductWithQuantity } from "@/types/product";
 import { ORDER_STATUS } from "@/lib/constants";
 import { routeNames } from "@/routes/routeNames";
+import { z, ZodType } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+type CheckoutForm = { address: string; comments?: string };
+
+const CheckoutSchema: ZodType<CheckoutForm> = z.object({
+  address: z.string().min(1, { message: "Address is required" }),
+  comments: z.string().optional()
+});
 
 const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { cart, userId } = location.state;
 
-  const { register, watch } = useForm<{ address: string; comments: string }>();
+  const {
+    register,
+    watch,
+    trigger,
+    formState: { errors }
+  } = useForm<CheckoutForm>({
+    resolver: zodResolver(CheckoutSchema)
+  });
 
   const createOrder = useCreateOrder();
 
-  const handlePayNow = () => {
-    //TODO: backend cart does not handle quantity
-    const products: Product[] = cart?.products?.map(
-      (product: ProductWithQuantity) => product.product
-    );
-    const body: OrderCreate = { ...watch(), userId, products, status: ORDER_STATUS.PENDING };
-    createOrder.mutate(body, { onSuccess: () => navigate(routeNames.public.home) });
+  //TODO: backend cart does not handle quantity
+  const handlePayNow = async () => {
+    const isValid = await trigger();
+    if (isValid) {
+      const products: Product[] = cart?.products?.map(
+        (product: ProductWithQuantity) => product.product
+      );
+
+      const body: OrderCreate = {
+        ...watch(),
+        userId,
+        products,
+        status: ORDER_STATUS.PENDING
+      };
+
+      createOrder.mutate(body, { onSuccess: () => navigate(routeNames.public.home) });
+    }
   };
 
   return (
@@ -37,8 +62,11 @@ const Checkout = () => {
         <div className="border border-1 border-grey p-3">
           <Label htmlFor="address">Address</Label>
           <Input className="my-2" placeholder="Enter address.." {...register("address")} />
+          {errors.address && <p className="text-red-500">{errors.address.message}</p>}
+
           <Label htmlFor="comments">Comments</Label>
           <Input className="my-2" placeholder="Enter comments.." {...register("comments")} />
+          {errors.comments && <p className="text-red-500">{errors.comments.message}</p>}
         </div>
       </div>
       {cart.products.length ? (

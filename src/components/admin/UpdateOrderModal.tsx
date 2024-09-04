@@ -4,7 +4,7 @@ import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import Modal from "../Modal";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Order } from "@/types/order";
 import {
   Select,
@@ -17,6 +17,31 @@ import {
 import { ORDER_STATUS } from "@/lib/constants";
 import { useUpdateOrder } from "@/features/useOrder";
 
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const status = [
+  ORDER_STATUS.PENDING,
+  ORDER_STATUS.SHIPPED,
+  ORDER_STATUS.DELIVERED,
+  ORDER_STATUS.CANCELLED
+];
+// Define the Zod schema for the Order type
+const OrderSchema = z.object({
+  comments: z.string().optional(),
+  status: z
+    .enum([
+      ORDER_STATUS.PENDING,
+      ORDER_STATUS.SHIPPED,
+      ORDER_STATUS.DELIVERED,
+      ORDER_STATUS.CANCELLED
+    ])
+    .refine((value) => status.includes(value), {
+      message: "Invalid status"
+    }),
+  address: z.string().min(1, { message: "Address is required" })
+});
+
 type UpdateOrderProps = {
   open: boolean;
   toggleModal: () => void;
@@ -24,13 +49,23 @@ type UpdateOrderProps = {
 };
 
 const UpdateOrderModal: React.FC<UpdateOrderProps> = ({ open, toggleModal, data }) => {
-  const { register, watch, reset, setValue, control } = useForm<Order>({
+  const {
+    register,
+    reset,
+    setValue,
+    watch,
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<Order>({
+    resolver: zodResolver(OrderSchema),
     defaultValues: data
   });
 
   const updateOrder = useUpdateOrder();
-  const handleUpdateOrder = () => {
-    const order: Order = { ...watch() };
+
+  const onSubmit: SubmitHandler<Order> = (formData) => {
+    const order: Order = { ...watch(), ...formData };
     updateOrder.mutate(order, { onSuccess: toggleModal });
   };
 
@@ -50,50 +85,54 @@ const UpdateOrderModal: React.FC<UpdateOrderProps> = ({ open, toggleModal, data 
       modalTitle="Update order details"
       className="w-6/12"
     >
-      <div className="w-full md:w-9/12 mt-6">
-        <div className="my-3">
-          <Label htmlFor="orderAddress">Address</Label>
-          <Input id="orderAddress" placeholder="Enter address.." {...register("address")} />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="w-full md:w-9/12 mt-6">
+          <div className="my-3">
+            <Label htmlFor="orderAddress">Address</Label>
+            <Input id="orderAddress" placeholder="Enter address.." {...register("address")} />
+            {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
+          </div>
+          <div className="my-3">
+            <Label htmlFor="comments">Comments</Label>
+            <Input id="comments" placeholder="Enter comment.." {...register("comments")} />
+            {errors.comments && <p className="text-red-500 text-sm">{errors.comments.message}</p>}
+          </div>
+          <div className="my-3">
+            <Label>Status</Label>
+            <Controller
+              name="status"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    setValue("status", value);
+                  }}
+                >
+                  <SelectTrigger className="w-[250px]">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent className="z-[1001]">
+                    <SelectGroup>
+                      {statusOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.status && <p className="text-red-500 text-sm">{errors.status.message}</p>}
+          </div>
         </div>
-        <div className="my-3">
-          <Label htmlFor="comments">Comments</Label>
-          <Input id="comments" placeholder="Enter comment.." {...register("comments")} />
-        </div>
-        <div className="my-3">
-          <Label>Status</Label>
-          <Controller
-            name="status"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <Select
-                value={field.value}
-                onValueChange={(value) => {
-                  field.onChange(value);
-                  setValue("status", value);
-                }}
-              >
-                <SelectTrigger className="w-[250px]">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent className="z-[1001]">
-                  <SelectGroup>
-                    {statusOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            )}
-          />
-        </div>
-      </div>
-      <Separator className="mb-3 mt-5" />
-      <Button onClick={handleUpdateOrder} disabled={updateOrder.isPending}>
-        Update order
-      </Button>
+        <Separator className="mb-3 mt-5" />
+        <Button type="submit" disabled={updateOrder.isPending}>
+          Update order
+        </Button>
+      </form>
     </Modal>
   );
 };

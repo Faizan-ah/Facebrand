@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import { saveDataToLocalStorage } from "@/lib/utils";
 import { useGlobalState } from "@/hooks/useGlobalState";
 import { ROLE_ADMIN } from "@/lib/accessControl";
 
-const RegisterSchema = z.object({
+const RegisterSchema: ZodType<UserRegister> = z.object({
   firstName: z.string().min(1, { message: "First name is required" }),
   lastName: z.string().min(1, { message: "Last name is required" }),
   birthDate: z
@@ -25,7 +25,10 @@ const RegisterSchema = z.object({
       },
       { message: "Birth date cannot be in the future" }
     ),
-  phoneNumber: z.string().min(1, { message: "Phone number is required" }), // .regex(/^\+\d{5,}$/, { message: "Invalid phone number format" }),
+  phoneNumber: z
+    .string()
+    .min(1, { message: "Phone number is required" })
+    .regex(/^\+\d{5,}$/, { message: "Invalid phone number format" }),
   email: z.string().email({ message: "Invalid email address." }).nonempty("Email is required"),
   password: z
     .string()

@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { useDeleteUser, useGetUsers } from "@/features/useUser";
 import { User } from "@/types/user";
 import UpdateUserModal from "./UpdateUserModal";
+import { useGlobalState } from "@/hooks/useGlobalState";
 
 const UserTable = () => {
   const [open, setOpen] = useState(false);
@@ -26,6 +27,8 @@ const UserTable = () => {
     role: ""
   });
   const { data: users, isFetching, isError } = useGetUsers();
+  const { state } = useGlobalState();
+  const loggedInUserId = state.loggedInUser?.id;
   const deleteUser = useDeleteUser();
   const toggleModal = () => {
     setOpen(!open);
@@ -70,7 +73,11 @@ const UserTable = () => {
                   <Button
                     variant="destructive"
                     className="w-16"
-                    disabled={deleteUser.isPending && deleteUser.variables === user.id}
+                    disabled={
+                      deleteUser.isPending ||
+                      deleteUser.variables === user.id ||
+                      user.id === loggedInUserId
+                    }
                     onClick={() => deleteUser.mutate(user.id)}
                   >
                     Delete

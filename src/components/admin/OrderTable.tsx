@@ -114,8 +114,10 @@ const OrderTable = () => {
       </Table>
       {isFetching ? (
         <div className="text-center my-2">Loading...</div>
-      ) : isError ? (
+      ) : orders.length === 0 && isError ? (
         <div className="text-center my-2">Error fetching orders.</div>
+      ) : orders.length === 0 ? (
+        <div className="text-center my-2">No orders</div>
       ) : null}
       <UpdateOrderModal open={open} toggleModal={toggleModal} data={currentOrder} />
     </div>

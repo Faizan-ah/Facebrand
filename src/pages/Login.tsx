@@ -42,9 +42,6 @@ const Login = () => {
         responseData?.user.role === ROLE_ADMIN
           ? navigate(routeNames.admin.dashboard)
           : navigate(routeNames.public.home);
-      },
-      onError: (err) => {
-        console.error("Login failed", err);
       }
     });
   };

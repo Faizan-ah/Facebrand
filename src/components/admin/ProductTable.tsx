@@ -108,8 +108,10 @@ const ProductTable = () => {
       </Table>
       {isFetching ? (
         <div className="text-center my-2">Loading...</div>
-      ) : isError ? (
+      ) : products.length === 0 && isError ? (
         <div className="text-center my-2">Error fetching products.</div>
+      ) : products.length === 0 ? (
+        <div className="text-center my-2">No products</div>
       ) : null}
       <AddEditProductModal
         type="Update"

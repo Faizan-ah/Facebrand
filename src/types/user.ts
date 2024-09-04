@@ -27,3 +27,5 @@ export type UserLogin = {
 };
 
 export type UserRegister = Omit<User, "id" | "role"> & { password: string };
+
+export type UserUpdate = Omit<User, "id" | "role" | "birthDate">;
