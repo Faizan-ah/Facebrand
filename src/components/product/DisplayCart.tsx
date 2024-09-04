@@ -4,12 +4,12 @@ import { useAddToCart, useGetCart } from "@/features/useCart";
 import { routeNames } from "@/routes/routeNames";
 import { useNavigate } from "react-router-dom";
 import { calculateTotalCartAmount, getTotalProductPrice } from "@/lib/utils";
+import { useGlobalState } from "@/hooks/useGlobalState";
 
 const DisplayCart = (props: { userId: string }) => {
   const { userId } = props;
-
   const navigate = useNavigate();
-
+  const { state } = useGlobalState();
   const { data: cart, isFetching } = useGetCart(userId);
   const addToCart = useAddToCart();
 
@@ -34,7 +34,7 @@ const DisplayCart = (props: { userId: string }) => {
 
   return (
     <div>
-      {cart.products.length ? (
+      {state.isAuthenticated && cart.products.length ? (
         cart.products.map((product) => (
           <div
             key={product.product.id}
@@ -62,17 +62,19 @@ const DisplayCart = (props: { userId: string }) => {
           </div>
         ))
       ) : (
-        <div className="text-center">Cart is empty</div>
+        <div className="border-b border-b-1 border-grey p-3 text-center">Cart is empty</div>
       )}
       <div className="flex justify-between items-center my-2 ">
-        {cart.products.length > 0 && (
+        {state.isAuthenticated && cart.products.length > 0 && (
           <div className="pl-3">
             <h2 className="font-semibold">Total</h2>
             <span>${calculateTotalCartAmount(cart)}</span>
           </div>
         )}
         <Button
-          disabled={cart.products.length === 0 || isFetching || isLoadingAddToCart}
+          disabled={
+            !state.isAuthenticated || cart.products.length === 0 || isFetching || isLoadingAddToCart
+          }
           className="mr-0 ml-auto"
           onClick={handleCheckout}
         >
