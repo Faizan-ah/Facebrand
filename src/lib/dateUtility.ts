@@ -1,5 +1,6 @@
 import moment from "moment";
 
+const DATE_FORMAT = "YYYY-MM-DD";
 const DATE_TIME_FORMAT = "DD/MM/YYYY - hh:mm a";
 const SERVER_DATE_FORMAT = "DD-MM-YYYY";
 
@@ -30,4 +31,8 @@ export const convertArrayTimestampToDateTimeFormat = (timestampArray: number[]):
   const localDate = utcDate.local();
 
   return localDate.format(DATE_TIME_FORMAT);
+};
+
+export const isBefore = (date: Date | string) => {
+  return moment(date, DATE_FORMAT, true).isBefore(moment(), "day");
 };

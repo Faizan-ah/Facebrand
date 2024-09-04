@@ -37,7 +37,12 @@ export const registerUser = async (user: UserRegister) => {
     return res.data.data;
   } catch (error) {
     console.error(error);
-    return Promise.reject(new Error("Something went wrong"));
+    if (isAxiosError(error)) {
+      const errorMessage = error.response?.data?.error?.message || "An unknown error occurred";
+      return Promise.reject(new Error(errorMessage));
+    } else {
+      return Promise.reject(new Error("An unexpected error occurred"));
+    }
   }
 };
 

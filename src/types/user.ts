@@ -17,7 +17,7 @@ export type User = {
   address?: string;
   email: string;
   phoneNumber: string;
-  birthDate: string;
+  birthDate: string | Date;
   role: string;
 };
 

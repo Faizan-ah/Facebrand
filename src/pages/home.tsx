@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { Button } from "../components/ui/button";
 import { Product } from "@/types/product";
 import { useGetProducts } from "@/features/useProduct";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -53,11 +52,8 @@ const Home = () => {
   const toggleModal = () => setOpen(!open);
 
   return (
-    <div className="flex flex-col justify-center items-center flex-wrap">
+    <div className="flex flex-col justify-center items-center flex-wrap my-3">
       <h1 className="text-2xl my-2">Welcome!</h1>
-      <Button style={{ minWidth: "asd" }} onClick={toggleModal}>
-        Cart
-      </Button>
       {/* //TODO: move modal inside the component */}
       <Modal style={{ minWidth: "400px" }} open={open} toggleModal={toggleModal} modalTitle="Cart">
         <DisplayCart userId={userId} />

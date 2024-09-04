@@ -36,7 +36,11 @@ export const useLoginUser = () => {
 export const useRegisterUser = () => {
   const mutation = useMutation({
     mutationFn: registerUser,
-    onError: () => {
+    onError: (error) => {
+      if (error.message) {
+        displayErrorAlert(error.message);
+        return;
+      }
       displayErrorAlert("Error with registering, try again later!");
     }
   });

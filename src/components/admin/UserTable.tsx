@@ -55,7 +55,7 @@ const UserTable = () => {
                 </TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.phoneNumber}</TableCell>
-                <TableCell>{user.birthDate}</TableCell>
+                <TableCell>{user.birthDate.toLocaleString()}</TableCell>
                 <TableCell>
                   <Button
                     className="mr-2 my-1 w-16"
