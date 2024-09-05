@@ -72,7 +72,7 @@ const ProductCard = (props: Props) => {
       </CardHeader>
       <CardFooter className="p-0 px-6 py-2">
         <Button className="w-full" onClick={handleAddProductToCart}>
-          Add | ${product.price}
+          Add | ${product.price.toFixed(2)}
         </Button>
       </CardFooter>
     </Card>
