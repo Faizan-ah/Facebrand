@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 
-import { CreateProduct, Product } from "@/types/product";
+import { CreateProduct, Product } from "../types/product";
 import { GlobalResponse } from "@/types";
 import { api, authApi } from ".";
 
