@@ -48,7 +48,7 @@ const Login = () => {
 
   return (
     <div className="flex md:flex-row flex-col items-center justify-center min-h-screen bg-gray-100">
-      <img src="./public/images/authImage.svg" className="w-6/12 h-1/2 " alt="Phone image" />
+      <img src="./images/authImage.svg" className="w-6/12 h-1/2 " alt="Phone image" />
       <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
         <h1 className="text-3xl font-semibold text-center mb-6 text-gray-800">Login</h1>
         <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">

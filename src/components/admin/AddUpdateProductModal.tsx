@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
@@ -11,8 +11,8 @@ import { Textarea } from "../ui/textarea";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Loader from "../Loader";
+import { uploadImageToImgBB } from "@/lib/imageUpload";
 
-//TODO: add type
 const ProductSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   price: z
@@ -52,7 +52,8 @@ const AddEditProductModal: React.FC<AddEditProductModalProps> = ({
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
+    setValue
   } = useForm<AddOrUpdateProduct>({
     resolver: zodResolver(ProductSchema),
     defaultValues: type === "Update" ? data : {}
@@ -61,12 +62,31 @@ const AddEditProductModal: React.FC<AddEditProductModalProps> = ({
   const addProduct = useAddProduct();
   const updateProduct = useUpdateProduct();
 
-  // Submit handler
+  const [imagePreviews, setImagePreviews] = useState<string[]>(data?.images || []);
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const uploadPromises = Array.from(files).map((file) => uploadImageToImgBB(file));
+      Promise.all(uploadPromises)
+        .then((imageUrls) => {
+          setImagePreviews([...imagePreviews, ...imageUrls]);
+          setValue("images", [...imagePreviews, ...imageUrls]);
+        })
+        .catch((error) => console.error("Image upload failed: ", error));
+    }
+  };
+
+  const removeImage = async (imageUrl: string) => {
+    const updatedImages = imagePreviews.filter((url) => url !== imageUrl);
+    setImagePreviews(updatedImages);
+    setValue("images", updatedImages);
+  };
+
   const onSubmit: SubmitHandler<AddOrUpdateProduct> = (formData) => {
     if (type === "Add") {
       const productData: CreateProduct = {
         ...formData,
-        images: [],
         rating: 0
       };
       addProduct.mutate(productData, { onSuccess: toggleModal });
@@ -80,8 +100,10 @@ const AddEditProductModal: React.FC<AddEditProductModalProps> = ({
     if (open) {
       if (type === "Update" && data) {
         reset(data);
+        setImagePreviews(data.images || []);
       } else if (type === "Add") {
         reset();
+        setImagePreviews([]);
       }
     }
   }, [open, data, type, reset]);
@@ -89,7 +111,34 @@ const AddEditProductModal: React.FC<AddEditProductModalProps> = ({
   return (
     <Modal open={open} toggleModal={toggleModal} modalTitle={`${type} Product`} className="w-6/12">
       <div className="w-full md:w-9/12 mt-6">
-        <Button>Add images</Button>
+        <div className="my-3">
+          <Label htmlFor="productImages">Product Images</Label>
+          <Input
+            type="file"
+            id="productImages"
+            accept="image/*"
+            multiple
+            onChange={handleImageUpload}
+          />
+          <div className="flex flex-wrap gap-2 mt-2">
+            {imagePreviews.map((image, index) => (
+              <div key={index} className="relative w-24 h-24">
+                <img
+                  src={image}
+                  alt={`Product Preview ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                <Button
+                  type="button"
+                  onClick={() => removeImage(image)}
+                  className="absolute top-0 right-0 w-1 h-1 bg-red-500 text-white"
+                >
+                  X
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="my-3">
             <Label htmlFor="productName">Product Name</Label>

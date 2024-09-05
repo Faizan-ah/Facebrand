@@ -14,7 +14,7 @@ import { Order } from "@/types/order";
 import UpdateOrderModal from "./UpdateOrderModal";
 import { convertArrayTimestampToDateTimeFormat } from "@/lib/dateUtility";
 import { ORDER_STATUS } from "@/lib/constants";
-import { Loader } from "lucide-react";
+import Loader from "../Loader";
 
 const OrderTable = () => {
   const [open, setOpen] = useState(false);
