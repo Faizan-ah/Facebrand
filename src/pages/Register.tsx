@@ -140,7 +140,11 @@ const Register = () => {
           </Button>
         </form>
       </div>
-      <img src="./image/authImage.svg" className="w-6/12 h-3/4 md:flex hidden " alt="Phone image" />
+      <img
+        src="./images/authImage.svg"
+        className="w-6/12 h-3/4 md:flex hidden "
+        alt="register image"
+      />
     </div>
   );
 };

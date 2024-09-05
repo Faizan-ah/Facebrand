@@ -3,13 +3,7 @@ import { getDataFromLocalStorage, removeDataFromLocalStorage } from "@/lib/utils
 import { routeNames } from "@/routes/routeNames";
 import axios, { isAxiosError } from "axios";
 
-const isDevelopment = import.meta.env.MODE === "development";
-let baseURL = "http://localhost:8080/api/v1";
-
-if (!isDevelopment) {
-  // Update this later when you have a working backend server
-  baseURL = "http://localhost:8080/api/v1";
-}
+const baseURL = import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:8080/api/v1";
 
 const api = axios.create({
   baseURL
@@ -49,4 +43,5 @@ authApi.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 export { api, authApi, isAxiosError };

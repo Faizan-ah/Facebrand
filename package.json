@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite --port 3000",
+    "dev:prod": "vite --port 3000 --mode production",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
