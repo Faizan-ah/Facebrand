@@ -50,7 +50,7 @@ const ProductCard = (props: Props) => {
         />
         <CardTitle
           onClick={viewProduct}
-          className="px-6 h-12 flex items-center hover:cursor-pointer hover:underline"
+          className="px-6 h-14 flex items-center hover:cursor-pointer hover:underline"
         >
           {product.name}
         </CardTitle>

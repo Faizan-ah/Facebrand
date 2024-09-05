@@ -11,6 +11,7 @@ import { routeNames } from "@/routes/routeNames";
 import { saveDataToLocalStorage } from "@/lib/utils";
 import { useGlobalState } from "@/hooks/useGlobalState";
 import { ROLE_ADMIN } from "@/lib/accessControl";
+import Loader from "@/components/Loader";
 
 export const UserSchema: ZodType<UserLogin> = z.object({
   email: z
@@ -76,8 +77,16 @@ const Login = () => {
 
           <Button
             type="submit"
+            disabled={loginUser.isPending}
             className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
+            <Loader
+              width="20"
+              height="20"
+              color="white"
+              visible={loginUser.isPending}
+              wrapperClass="mr-1 flex justify-center items-center"
+            />
             Login
           </Button>
         </form>

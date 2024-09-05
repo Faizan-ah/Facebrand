@@ -83,6 +83,7 @@ const AddEditProductModal: React.FC<AddEditProductModalProps> = ({
     setValue("images", updatedImages);
   };
 
+  //!Bug: fix image bug
   const onSubmit: SubmitHandler<AddOrUpdateProduct> = (formData) => {
     if (type === "Add") {
       const productData: CreateProduct = {
