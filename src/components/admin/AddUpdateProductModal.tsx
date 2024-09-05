@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Separator } from "../ui/separator";
-import { Button } from "../ui/button";
-import Modal from "../Modal";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import Modal from "@/components/Modal";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAddProduct, useUpdateProduct } from "@/features/useProduct";
 import { AddOrUpdateProduct, CreateProduct, Product } from "@/types/product";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Loader from "../Loader";
+import Loader from "@/components/Loader";
 import { uploadImageToImgBB } from "@/lib/imageUpload";
 
 const ProductSchema = z.object({
