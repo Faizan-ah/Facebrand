@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-
 import { Product } from "@/types/product";
 import { useGetProducts } from "@/features/useProduct";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -20,7 +19,6 @@ import { getDataFromLocalStorage } from "@/lib/utils";
 import { User } from "@/types/user";
 import Loader from "@/components/Loader";
 
-//TODO: seperate into proper components
 const Home = () => {
   const { register, watch, control, setValue } = useForm<{
     search: string;
@@ -28,11 +26,10 @@ const Home = () => {
   }>();
 
   const [open, setOpen] = useState(false);
-
   const debouncedSearchTerm = useDebounce(watch("search"), 1000);
   const sortOptions = [
     { label: "Price: High to Low", value: "ph" },
-    { label: "Price: Low to High ", value: "pl" },
+    { label: "Price: Low to High", value: "pl" },
     { label: "Names Ascending", value: "asc" },
     { label: "Names Descending", value: "dsc" },
     { label: "Top rated", value: "tr" }
@@ -42,7 +39,7 @@ const Home = () => {
   useEffect(() => {
     const user: User = getDataFromLocalStorage("user");
     setUserId(user?.id);
-  }, [userId]);
+  }, []);
 
   const {
     data: products,
@@ -53,19 +50,20 @@ const Home = () => {
   const toggleModal = () => setOpen(!open);
 
   return (
-    <div className="flex flex-col justify-center items-center flex-wrap my-3">
-      <h1 className="text-2xl my-2">Welcome!</h1>
-      {/* //TODO: move modal inside the component */}
-      <Modal style={{ minWidth: "400px" }} open={open} toggleModal={toggleModal} modalTitle="Cart">
-        <DisplayCart userId={userId} />
-      </Modal>
-
-      <div className="flex gap-5 my-3">
+    <div className="flex flex-col items-center p-4 md:p-8">
+      <h1 className="text-4xl font-bold mb-6 text-center">Welcome to Facebrand!</h1>
+      <p className="text-lg text-gray-700 mb-6 text-center">
+        Dive into our collection of skincare treasures, handpicked to elevate your beauty routine.
+        We have everything you need to pamper your skin and reveal your natural glow. Discover your
+        new skincare favorites and enjoy a more radiant you.
+      </p>
+      <div className="flex flex-col md:flex-row gap-4 mb-6 w-full max-w-4xl">
         <Input
           type="search"
           disabled={isFetching}
           {...register("search")}
-          placeholder="Search products.."
+          placeholder="Search for products..."
+          className="flex-1"
         />
         <Controller
           name="sortBy"
@@ -80,7 +78,7 @@ const Home = () => {
                 setValue("sortBy", value);
               }}
             >
-              <SelectTrigger className="w-[250px]">
+              <SelectTrigger className="w-full md:w-1/3">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
@@ -96,13 +94,24 @@ const Home = () => {
           )}
         />
       </div>
-
+      <Modal
+        style={{ minWidth: "400px" }}
+        open={open}
+        toggleModal={toggleModal}
+        modalTitle="Your Cart"
+      >
+        <DisplayCart userId={userId} />
+      </Modal>
       {isFetching ? (
         <Loader height="200" />
       ) : isError ? (
-        <div>Error fetching products</div>
+        <div className="text-red-600 text-lg font-semibold">
+          Error fetching products. Please try again later.
+        </div>
       ) : products.length === 0 ? (
-        <div>No available products</div>
+        <div className="text-gray-600 text-lg font-semibold">
+          No products found. Check back later!
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 my-2">
           {products.map(
