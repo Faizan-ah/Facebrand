@@ -46,7 +46,7 @@ const ProductCard = (props: Props) => {
         <img
           onClick={viewProduct}
           src={product.images?.length ? product.images[0] : "/images/dummy-placeholder.png"}
-          className="h-48 w-full mx-auto hover:cursor-pointer"
+          className="h-48 px-6 hover:cursor-pointer"
         />
         <CardTitle
           onClick={viewProduct}

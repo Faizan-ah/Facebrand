@@ -38,9 +38,9 @@ const DisplayCart = (props: { userId: string }) => {
         cart.products.map((product) => (
           <div
             key={product.product.id}
-            className="border-b border-b-1 border-grey p-3 flex justify-between items-center"
+            className="border-b border-b-1 border-grey p-3 flex justify-between "
           >
-            <div>
+            <div className="max-w-[55%]">
               <span>{product.product.name}</span>
               <p className="text-sm font-semibold">${getTotalProductPrice(product)}</p>
             </div>

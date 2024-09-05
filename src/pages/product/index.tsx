@@ -47,16 +47,19 @@ const Product = () => {
   };
 
   return (
-    <div className="flex w-9/12 justify-evenly mx-auto mt-6">
-      <img
-        src={product.images?.length ? product.images[0] : "/images/dummy-placeholder.png"}
-        className="max-h-72 max-w-72 hover:cursor-pointer "
-      />
-      <div className="min-w-[300px]">
-        <h1 className="text-3xl font-semibold py-2 mt-6">{product.name}</h1>
-        <p className="min-h-[100px]">
-          {description}
-          {product.description.length > 700 ? (
+    <div className="flex flex-col lg:flex-row w-[85%] max-w-screen-xl mx-auto mt-8 p-4 lg:p-8">
+      <div className="lg:w-1/2 w-full mt-6">
+        <img
+          src={product.images?.length ? product.images[0] : "/images/dummy-placeholder.png"}
+          className="w-full max-w-xs lg:max-w-md object-contain hover:scale-105 transition-transform duration-300"
+          alt={product.name}
+        />
+      </div>
+      <div className="lg:w-1/2 w-full flex flex-col justify-between p-4 lg:ml-8">
+        <h1 className="text-2xl lg:text-4xl font-semibold mb-4">{product.name}</h1>
+        <p className="text-sm lg:text-base mb-4 text-gray-700">
+          <p className="whitespace-pre-line">{description}</p>
+          {product.description.length > 700 && (
             <>
               <span>{!fullDescription && "..."}</span>
               <span
@@ -66,19 +69,22 @@ const Product = () => {
                 Read {fullDescription ? "Less" : "More"}
               </span>
             </>
-          ) : null}
+          )}
         </p>
-        <div className="flex justify-between items-center my-2">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6">
           <div>
-            <div className="text-xl">
-              <span className="text-xl font-semibold">Price: </span>${product.price}
+            <div className="text-xl lg:text-2xl font-bold mb-2">
+              Price: <span className="text-green-600">${product.price}</span>
             </div>
-            <div className="text-xl">
-              <span className="text-xl font-semibold">Rating: </span> {product.rating}/5
+            <div className="text-lg lg:text-xl">
+              Rating: <span className="font-semibold">{product.rating}/5</span>
             </div>
           </div>
-          <Button className="mr-4" onClick={handleAddProductToCart}>
-            Add to cart
+          <Button
+            className="mt-4 lg:mt-0 lg:ml-6 w-full lg:w-auto"
+            onClick={handleAddProductToCart}
+          >
+            Add to Cart
           </Button>
         </div>
       </div>

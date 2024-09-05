@@ -17,7 +17,7 @@ const ProductSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   price: z
     .number({ message: "Price is required" })
-    .min(1, { message: "Price must be greater than 0" }),
+    .min(0.01, { message: "Price must be greater than 0" }),
   description: z.string().min(1, { message: "Description is required" }),
   images: z.array(z.string()).optional(),
   stock: z.number({ message: "Stock is required" }).min(0, { message: "Stock must be at least 0" }),
@@ -162,6 +162,7 @@ const AddEditProductModal: React.FC<AddEditProductModalProps> = ({
               type="number"
               id="productPrice"
               placeholder="Enter price.."
+              step="any"
               {...register("price", { valueAsNumber: true })}
             />
             {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
