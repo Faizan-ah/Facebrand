@@ -41,12 +41,12 @@ const ProductCard = (props: Props) => {
   const viewProduct = () =>
     navigate(routeNames.public.productDetails + product.id, { state: { product } });
   return (
-    <Card key={product.id} className="w-64 h-[24rem] border-none shadow-none">
+    <Card key={product.id} className="w-64 border-none h-[24rem] shadow-none">
       <CardHeader className="p-0">
         <img
           onClick={viewProduct}
           src={product.images?.length ? product.images[0] : "/images/dummy-placeholder.png"}
-          className="max-h-48 max-w-36 hover:cursor-pointer"
+          className="h-48 w-full mx-auto hover:cursor-pointer"
         />
         <CardTitle
           onClick={viewProduct}
